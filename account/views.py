@@ -13,6 +13,7 @@ from knox.views import (
 from .serializers import RegistrationSerializer
 
 
+# AUTH
 @api_view(['POST'])
 def register_user(resquest):
     serializer = RegistrationSerializer(data=resquest.data)
@@ -40,20 +41,21 @@ class LoginView(KnoxLoginView):
         login(request, user)
         return super(LoginView, self).post(request, format=None)
     
+
 class LogoutView(KnoxLogoutView):
     permission_classes = (permissions.AllowAny,)
+
 
 class LogoutAllView(KnoxLogoutAllView):
     permission_classes = (permissions.AllowAny,)
     
-# @api_view(['POST'])
-# def login_user(request):
-#     serializer = AuthTokenSerializer(data=request.data)
-#     serializer.is_valid(raise_exception=True)
-#     user = serializer.validated_data['user']
-#     login(request, user)
-#     _, token = AuthToken.objects.create(user=user)
-#     return Response({
-#         'user': user.username,
-#         'token': token
-#     })
+
+# USER LIST 
+from .models import User
+from .serializers import CustomUserSerializer
+from rest_framework import generics
+
+
+class UserListView(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = CustomUserSerializer

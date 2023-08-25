@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from base.models import Car, Customer, Rental
-from .serializers import CarSerializer, CustomerSerializer, RentalSerializer
+from base.models import Car, Rental
+from .serializers import CarSerializer, RentalSerializer
 from rest_framework.permissions import IsAuthenticated
 
 @api_view(['GET'])
@@ -11,12 +11,12 @@ def car_list(request):
     serializer = CarSerializer(cars, many=True)
     return Response(serializer.data)
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def customer_list(request):
-    customers = Customer.objects.all()
-    serializer = CustomerSerializer(customers, many=True)
-    return Response(serializer.data)
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+# def customer_list(request):
+#     customers = Customer.objects.all()
+#     serializer = CustomerSerializer(customers, many=True)
+#     return Response(serializer.data)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

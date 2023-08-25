@@ -1,25 +1,7 @@
+from django.conf import settings
 from django.db import models
-from django.contrib.auth.models import User
 from django.utils import timezone
 
-# Create your models here.
-
-class Customer(models.Model):
-    GENDER_CHOICES = [
-        ('M', 'Male'),
-        ('F', 'Female'),
-    ]
-    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
-    full_name = models.CharField(max_length=100)
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
-    birth_date = models.DateField()
-    phone_number = models.CharField(max_length=20) 
-    nik = models.CharField(max_length=16, unique=True)  
-    # foto profil
-    
-    def __str__(self):
-        return self.full_name
-    
 
 class Car(models.Model):
     TRANSMISSION_CHOICES = [
@@ -36,6 +18,8 @@ class Car(models.Model):
     passenger_capacity = models.PositiveIntegerField()
     fuel_capacity = models.DecimalField(max_digits=5, decimal_places=2)
     description = models.TextField()
+    # gambar
+    # is_bookings
 
     def __str__(self):
         return self.name
@@ -49,10 +33,11 @@ class Rental(models.Model):
     ]
     
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     start_date = models.DateField(default=timezone.now)
     end_date = models.DateField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
+    # denda
 
     def __str__(self):
         return f"Rental {self.id}: {self.car} by {self.customer} ({self.get_status_display()})"

@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from base.models import (
     Car, 
-    Customer, 
     Rental
     )
 
@@ -9,12 +8,6 @@ from base.models import (
 class CarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
-        fields = '__all__'
-        
-
-class CustomerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Customer
         fields = '__all__'
 
 

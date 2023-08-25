@@ -3,7 +3,7 @@ from rest_framework import permissions
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from knox.auth import AuthToken
+# from knox.auth import AuthToken
 from knox.views import (
     LoginView as KnoxLoginView, 
     LogoutView as KnoxLogoutView,
@@ -20,11 +20,11 @@ def register_user(resquest):
     if serializer.is_valid():
         user = serializer.save()
         serializer.is_valid(raise_exception=True)
-        _, token = AuthToken.objects.create(user=user)
+        # _, token = AuthToken.objects.create(user=user)
         data['succes'] = 'Berhasil melakukan Registrasi'
-        data['first_name'] = user.first_name
+        data['full_name'] = user.full_name
         data['email'] = user.email
-        data['token'] = str(token)
+        # data['token'] = str(token)
     else:
         data = serializer.errors
     return Response(data)

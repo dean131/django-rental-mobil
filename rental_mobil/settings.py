@@ -52,10 +52,9 @@ REST_FRAMEWORK = {
 }
 
 REST_KNOX = {
-  'AUTH_TOKEN_CHARACTER_LENGTH': 64,
   'TOKEN_TTL': timedelta(hours=10),
-  'USER_SERIALIZER': 'knox.serializers.UserSerializer',
   'TOKEN_LIMIT_PER_USER': 3,
+  'USER_SERIALIZER': 'knox.serializers.UserSerializer',
 }
 
 MIDDLEWARE = [

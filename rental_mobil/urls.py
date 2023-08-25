@@ -22,5 +22,5 @@ urlpatterns = [
     path('', include('base.urls')),
     path('api/', include('api.urls')),
     path('account/', include('account.urls')),
-    path('api/auth/', include('knox.urls'))
+    # path('auth/', include('knox.urls')),
 ]

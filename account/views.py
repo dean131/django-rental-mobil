@@ -1,9 +1,14 @@
 from django.contrib.auth import login
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.response import Response
 from rest_framework import permissions
 from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from knox.auth import AuthToken
+from knox.views import (
+    LoginView as KnoxLoginView, 
+    LogoutView as KnoxLogoutView,
+    LogoutAllView as KnoxLogoutAllView,
+    )
 
 from .serializers import RegistrationSerializer
 
@@ -24,15 +29,31 @@ def register_user(resquest):
         data = serializer.errors
     return Response(data)
 
-@api_view(['POST'])
-@permission_classes([permissions.AllowAny])
-def login_user(request):
-    serializer = AuthTokenSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    user = serializer.validated_data['user']
-    login(request, user)
-    _, token = AuthToken.objects.create(user=user)
-    return Response({
-        'user': user.username,
-        'token': token
-    })
+
+class LoginView(KnoxLoginView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        serializer = AuthTokenSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        login(request, user)
+        return super(LoginView, self).post(request, format=None)
+    
+class LogoutView(KnoxLogoutView):
+    permission_classes = (permissions.AllowAny,)
+
+class LogoutAllView(KnoxLogoutAllView):
+    permission_classes = (permissions.AllowAny,)
+    
+# @api_view(['POST'])
+# def login_user(request):
+#     serializer = AuthTokenSerializer(data=request.data)
+#     serializer.is_valid(raise_exception=True)
+#     user = serializer.validated_data['user']
+#     login(request, user)
+#     _, token = AuthToken.objects.create(user=user)
+#     return Response({
+#         'user': user.username,
+#         'token': token
+#     })

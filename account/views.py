@@ -3,14 +3,18 @@ from rest_framework import permissions
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-# from knox.auth import AuthToken
+from rest_framework import generics
 from knox.views import (
     LoginView as KnoxLoginView, 
     LogoutView as KnoxLogoutView,
     LogoutAllView as KnoxLogoutAllView,
-    )
+)
 
-from .serializers import RegistrationSerializer
+from .models import User
+from .serializers import (
+    CustomUserSerializer,
+    RegistrationSerializer
+)
 
 
 # AUTH
@@ -21,11 +25,9 @@ def register_user(resquest):
     if serializer.is_valid():
         user = serializer.save()
         serializer.is_valid(raise_exception=True)
-        # _, token = AuthToken.objects.create(user=user)
-        data['succes'] = 'Berhasil melakukan Registrasi'
+        data['id'] = user.id
         data['full_name'] = user.full_name
         data['email'] = user.email
-        # data['token'] = str(token)
     else:
         data = serializer.errors
     return Response(data)
@@ -51,11 +53,6 @@ class LogoutAllView(KnoxLogoutAllView):
     
 
 # USER LIST 
-from .models import User
-from .serializers import CustomUserSerializer
-from rest_framework import generics
-
-
 class UserListView(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = CustomUserSerializer

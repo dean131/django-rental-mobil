@@ -59,3 +59,4 @@ class RentalModelViewSet(ModelViewSet):
         serializer = self.get_serializer(queryset, fields=fields, many=True)
         return Response(serializer.data)
 
+"""difa"""

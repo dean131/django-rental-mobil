@@ -5,7 +5,7 @@ from .views import (
     LoginView,
     LogoutView,
     LogoutAllView,
-    UserListView,
+    UserModelViewSet,
 )
 
 urlpatterns = [
@@ -14,5 +14,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='knox_logout'),
     path('logoutall/', LogoutAllView.as_view(), name='knox_logout_all'),
 
-    path('userlist/', UserListView.as_view(), name='user_list'),
+    path('userdetail/<str:pk>/', UserModelViewSet.as_view({'get': 'retrieve'}), name='userdetail'),
+    path('userlist/', UserModelViewSet.as_view({'get': 'list'}), name='userlist'),
+    path('userupdate/<str:pk>/', UserModelViewSet.as_view({'patch': 'partial_update'}), name='userupdate'),
 ]

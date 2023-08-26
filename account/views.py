@@ -3,18 +3,20 @@ from rest_framework import permissions
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import generics
+from rest_framework.viewsets import ModelViewSet
+
 from knox.views import (
     LoginView as KnoxLoginView, 
     LogoutView as KnoxLogoutView,
     LogoutAllView as KnoxLogoutAllView,
 )
 
-from .models import User
 from .serializers import (
     CustomUserSerializer,
     RegistrationSerializer
 )
+
+from .models import User
 
 
 # AUTH
@@ -53,6 +55,6 @@ class LogoutAllView(KnoxLogoutAllView):
     
 
 # USER LIST 
-class UserListView(generics.ListCreateAPIView):
+class UserModelViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = CustomUserSerializer

@@ -27,11 +27,13 @@ def register_user(resquest):
     if serializer.is_valid():
         user = serializer.save()
         serializer.is_valid(raise_exception=True)
+        data['status'] = 1
         data['id'] = user.id
         data['full_name'] = user.full_name
         data['email'] = user.email
     else:
-        data = serializer.errors
+        data['status'] = 0
+        data['message'] = serializer.errors
     return Response(data)
 
 

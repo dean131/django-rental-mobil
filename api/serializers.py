@@ -5,32 +5,54 @@ from base.models import (
 )
 
 
-class CarSerializer(serializers.ModelSerializer):
+class CarModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
         fields = '__all__'
 
 
-class RentalSerializer(serializers.ModelSerializer):
+class CarDynamicFieldsModelSerializer(CarModelSerializer):
+
+    def __init__(self, *args, **kwargs):
+        fields = kwargs.pop('fields', None)
+        super().__init__(*args, **kwargs)
+
+        if fields is not None:
+            allowed = set(fields)
+            existing = set(self.fields)
+            for field_name in existing - allowed:
+                self.fields.pop(field_name)
+
+
+class RentalModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rental
-        fields = [
-            'customer', 
-            'car', 
-            'status', 
-            'start_date', 
-            'end_date', 
-            'total_cost', 
-            'total_days',
-        ]
+        fields = '__all__'
 
 
-class HomePageViewlSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Car
-        fields = [
-            'id',
-            'name',
-            'price',
-        ]
+class RentalDynamicFieldsModelSerializer(RentalModelSerializer):
+
+    def __init__(self, *args, **kwargs):
+        fields = kwargs.pop('fields', None)
+        super().__init__(*args, **kwargs)
+
+        if fields is not None:
+            allowed = set(fields)
+            existing = set(self.fields)
+            for field_name in existing - allowed:
+                self.fields.pop(field_name)
+
+# class RentalModelSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Rental
+#         fields = [
+#             'id',
+#             'customer', 
+#             'car', 
+#             'status', 
+#             'start_date', 
+#             'end_date', 
+#             'total_cost', 
+#             'total_days',
+#         ]
 

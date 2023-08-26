@@ -18,7 +18,7 @@ class Car(models.Model):
     passenger_capacity = models.PositiveIntegerField()
     fuel_capacity = models.DecimalField(max_digits=5, decimal_places=2)
     description = models.TextField()
-    # gambar
+    picture = models.ImageField(blank=True, null=True)
     # is_bookings
 
     def __str__(self):

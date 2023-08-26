@@ -9,6 +9,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         model = User
         fields = ['full_name', 'email', 'password', 'password2',]
 
+
     def save(self):
         user = User.objects.create_user(
             full_name=self.validated_data['full_name'],

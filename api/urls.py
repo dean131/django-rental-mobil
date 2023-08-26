@@ -1,9 +1,11 @@
-from django.urls import path
-from .views import car_list, rental_list, HomePageView
+from .views import CarModelViewSet, RentaModelViewSet
+from rest_framework.routers import DefaultRouter
 
-urlpatterns = [
-    path('cars/', car_list, name='car-list'),
-    path('rentals/', rental_list, name='rental-list'),
+router = DefaultRouter()
 
-    path('home/', HomePageView.as_view(), name='home'),
-]
+router.register('cars', CarModelViewSet, basename='car')
+router.register('rentals', RentaModelViewSet,  basename='rental')
+
+urlpatterns =[
+
+] + router.urls

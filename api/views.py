@@ -1,39 +1,51 @@
-from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from base.models import Car, Rental
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
-from rest_framework import authentication, permissions
-from .serializers import CarSerializer, RentalSerializer, HomePageViewlSerializer
+from rest_framework.viewsets import ModelViewSet
+from .serializers import (
+    CarModelSerializer, 
+    CarDynamicFieldsModelSerializer, 
+    RentalModelSerializer,
+    RentalDynamicFieldsModelSerializer,
+)
 
-from base.models import Car
+from base.models import Car, Rental
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def car_list(request):
-    cars = Car.objects.all()
-    serializer = CarSerializer(cars, many=True)
-    return Response(serializer.data)
 
-# @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
-# def customer_list(request):
-#     customers = Customer.objects.all()
-#     serializer = CustomerSerializer(customers, many=True)
-#     return Response(serializer.data)
+class CarModelViewSet(ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    queryset = Car.objects.all()
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def rental_list(request):
-    rentals = Rental.objects.all()
-    serializer = RentalSerializer(rentals, many=True)
-    return Response(serializer.data)
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return CarDynamicFieldsModelSerializer 
+        elif self.action == 'retrieve':
+            return CarModelSerializer
+        return super().get_serializer_class()
 
-class HomePageView(APIView):
-    # authentication_classes = [authentication.TokenAuthentication]
-    # permission_classes = [permissions.IsAdminUser]
+    def list(self, request, *args, **kwargs):
+        fields = request.query_params.getlist('fields') 
+        queryset = self.filter_queryset(self.get_queryset())
 
-    def get(self, request, format=None):
-        cars = Car.objects.all()
-        serializer = HomePageViewlSerializer(cars, many=True)
+        serializer = self.get_serializer(queryset, fields=fields, many=True)
         return Response(serializer.data)
+
+
+class RentalModelViewSet(ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    queryset = Rental.objects.all()
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return RentalDynamicFieldsModelSerializer 
+        elif self.action == 'retrieve':
+            return RentalModelSerializer
+
+        return super().get_serializer_class()
+
+    def list(self, request, *args, **kwargs):
+        fields = request.query_params.getlist('fields') 
+        queryset = self.filter_queryset(self.get_queryset())
+
+        serializer = self.get_serializer(queryset, fields=fields, many=True)
+        return Response(serializer.data)
+

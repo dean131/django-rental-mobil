@@ -23,9 +23,8 @@ class CarModelViewSet(ModelViewSet):
         return super().get_serializer_class()
 
     def list(self, request, *args, **kwargs):
-        fields = request.query_params.getlist('fields') 
         queryset = self.filter_queryset(self.get_queryset())
-
+        fields = request.query_params.getlist('fields') 
         serializer = self.get_serializer(queryset, fields=fields, many=True)
         return Response(serializer.data)
 
@@ -39,13 +38,11 @@ class RentalModelViewSet(ModelViewSet):
             return RentalDynamicFieldsModelSerializer 
         elif self.action == 'retrieve':
             return RentalModelSerializer
-
         return super().get_serializer_class()
 
     def list(self, request, *args, **kwargs):
         fields = request.query_params.getlist('fields') 
         queryset = self.filter_queryset(self.get_queryset())
-
         serializer = self.get_serializer(queryset, fields=fields, many=True)
         return Response(serializer.data)
 

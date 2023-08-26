@@ -1,11 +1,9 @@
-from .views import CarModelViewSet, RentaModelViewSet
+from .views import CarModelViewSet, RentalModelViewSet
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 
 router.register('cars', CarModelViewSet, basename='car')
-router.register('rentals', RentaModelViewSet,  basename='rental')
+router.register('rentals', RentalModelViewSet,  basename='rental')
 
-urlpatterns =[
-
-] + router.urls
+urlpatterns = router.urls

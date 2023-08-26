@@ -19,7 +19,7 @@ class Car(models.Model):
     fuel_capacity = models.DecimalField(max_digits=5, decimal_places=2)
     description = models.TextField()
     picture = models.ImageField(blank=True, null=True)
-    # is_bookings
+    is_booked = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -37,7 +37,7 @@ class Rental(models.Model):
     start_date = models.DateField(default=timezone.now)
     end_date = models.DateField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
-    # denda
+    late_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
     def __str__(self):
         return f"Rental {self.id}: {self.car} by {self.customer} ({self.get_status_display()})"

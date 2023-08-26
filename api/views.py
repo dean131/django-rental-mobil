@@ -1,3 +1,4 @@
+from datetime import datetime
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
@@ -70,4 +71,37 @@ class RentalModelViewSet(ModelViewSet):
             'total_days',
         ]
         serializer = self.get_serializer(queryset, fields=fields, many=True)
+        return Response(serializer.data)
+    
+    def create(self, request, *args, **kwargs):
+        user = request.user
+
+        car_id = request.data.get('car')
+        car = Car.objects.get(id=car_id) 
+
+        if car.is_booked == True:
+            return Response({
+                'status': 'error',
+                'message': 'Car is Booked',
+            })
+
+        start_date = request.data.get('start_date')
+        end_date = request.data.get('end_date')
+
+        date_format = "%Y-%m-%d"
+        start_date = datetime.strptime(start_date, date_format).date()
+        end_date = datetime.strptime(end_date, date_format).date()
+
+        rental = Rental.objects.create(
+            customer=user, 
+            car=car, 
+            start_date=start_date, 
+            end_date=end_date,
+        )
+        rental.save()
+
+        car.is_booked = True
+        car.save()
+
+        serializer = self.get_serializer(rental)
         return Response(serializer.data)

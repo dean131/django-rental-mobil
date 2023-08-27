@@ -1,10 +1,9 @@
 from django.contrib.auth import login
 from rest_framework import permissions
-from rest_framework.authtoken.serializers import AuthTokenSerializer
-from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.authtoken.serializers import AuthTokenSerializer
 
 from knox.views import (
     LoginView as KnoxLoginView, 
@@ -18,6 +17,12 @@ from .serializers import (
 )
 
 from .models import User
+
+
+# USER LIST 
+class UserModelViewSet(ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = CustomUserSerializer
 
 
 # AUTH
@@ -66,7 +71,3 @@ class LogoutAllView(KnoxLogoutAllView):
     permission_classes = (permissions.AllowAny,)
     
 
-# USER LIST 
-class UserModelViewSet(ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = CustomUserSerializer

@@ -26,18 +26,16 @@ class RegisterAPIView(APIView):
 
     def post(self, request, format=None):
         serializer = RegistrationSerializer(data=request.data)
-        data = {}
+        response = {}
         if serializer.is_valid():
             user = serializer.save()
-            serializer.is_valid(raise_exception=True)
-            data['status'] = 1
-            data['id'] = user.id
-            data['full_name'] = user.full_name
-            data['email'] = user.email
+            response['status'] = 1
+            response['id'] = user.id
+            response.update(serializer.data)
         else:
-            data['status'] = 0
-            data['message'] = serializer.errors
-        return Response(data)    
+            response['status'] = 0
+            response.update(serializer.errors)
+        return Response(response)    
 
 
 class LoginView(KnoxLoginView):
@@ -45,12 +43,19 @@ class LoginView(KnoxLoginView):
 
     def post(self, request, format=None):
         serializer = AuthTokenSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        login(request, user)
-        response = super(LoginView, self).post(request, format=None)
-        response.data['status'] = 1
-        return Response(response.data)
+        response = {}
+        if serializer.is_valid(): 
+            user = serializer.validated_data['user']
+            login(request, user)
+
+            res = super(LoginView, self).post(request, format=None)
+
+            response['status'] = 1
+            response.update(res.data)
+        else:
+            response['status'] = 0
+            response.update(serializer.errors)
+        return Response(response)
     
 
 class LogoutView(KnoxLogoutView):

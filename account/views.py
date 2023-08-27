@@ -21,6 +21,7 @@ from .models import User
 
 # USER LIST 
 class UserModelViewSet(ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = CustomUserSerializer
 

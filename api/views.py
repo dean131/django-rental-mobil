@@ -11,10 +11,13 @@ from .serializers import (
 
 from base.models import Car, Rental
 
-
+from rest_framework import filters
 class CarModelViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Car.objects.all()
+
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name', 'description']
 
     def get_serializer_class(self):
         if self.action == 'list':

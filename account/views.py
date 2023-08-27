@@ -2,6 +2,7 @@ from django.contrib.auth import login
 from rest_framework import permissions
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
@@ -20,21 +21,23 @@ from .models import User
 
 
 # AUTH
-@api_view(['POST'])
-def register_user(resquest):
-    serializer = RegistrationSerializer(data=resquest.data)
-    data = {}
-    if serializer.is_valid():
-        user = serializer.save()
-        serializer.is_valid(raise_exception=True)
-        data['status'] = 1
-        data['id'] = user.id
-        data['full_name'] = user.full_name
-        data['email'] = user.email
-    else:
-        data['status'] = 0
-        data['message'] = serializer.errors
-    return Response(data)
+class RegisterAPIView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        serializer = RegistrationSerializer(data=request.data)
+        data = {}
+        if serializer.is_valid():
+            user = serializer.save()
+            serializer.is_valid(raise_exception=True)
+            data['status'] = 1
+            data['id'] = user.id
+            data['full_name'] = user.full_name
+            data['email'] = user.email
+        else:
+            data['status'] = 0
+            data['message'] = serializer.errors
+        return Response(data)    
 
 
 class LoginView(KnoxLoginView):

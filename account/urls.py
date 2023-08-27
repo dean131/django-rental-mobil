@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import (
-    register_user,
+    RegisterAPIView,
     LoginView,
     LogoutView,
     LogoutAllView,
@@ -9,7 +9,7 @@ from .views import (
 )
 
 urlpatterns = [
-    path('register/', register_user, name='register_user'),
+    path('register/', RegisterAPIView.as_view(), name='register_user'),
     path('login/', LoginView.as_view(), name='knox_login'),
     path('logout/', LogoutView.as_view(), name='knox_logout'),
     path('logoutall/', LogoutAllView.as_view(), name='knox_logout_all'),

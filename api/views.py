@@ -29,6 +29,7 @@ class CarModelViewSet(ModelViewSet):
             fields = fields[0].split(',')
         else:
             fields = [
+                'id',
                 'name',
                 'car_type',
                 'price',

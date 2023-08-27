@@ -17,7 +17,13 @@ class CarModelViewSet(ModelViewSet):
     queryset = Car.objects.all()
 
     filter_backends = [filters.SearchFilter]
-    search_fields = ['name', 'description']
+    search_fields = [
+        'name', 
+        'car_type', 
+        'color', 
+        'description', 
+        'transmission',
+    ]
 
     def get_serializer_class(self):
         if self.action == 'list':

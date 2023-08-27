@@ -39,4 +39,5 @@ class CustomUserSerializer(serializers.ModelSerializer):
             'birth_date',
             'phone_number',
             'nik',
+            'profile_picture',
         ]

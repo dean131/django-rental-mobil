@@ -34,16 +34,17 @@ class User(AbstractBaseUser):
     full_name = models.CharField(max_length=255)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     birth_date = models.DateField(blank=True, null=True)
-    phone_number = models.CharField(max_length=20) 
+    phone_number = models.CharField(max_length=20, blank=True, null=True) 
     nik = models.CharField(max_length=16, unique=True, blank=True, null=True)  
+    license_card_image = models.ImageField(blank=True, null=True)
+    id_card_image = models.ImageField(blank=True, null=True)
+    profile_picture = models.ImageField(blank=True, null=True)
 
     date_joined = models.DateField(verbose_name='date joined', auto_now_add=True,)
     last_login = models.DateField(verbose_name='last login', auto_now=True,)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    id_card_image = models.ImageField(blank=True, null=True)
-    license_card_image = models.ImageField(blank=True, null=True)
 
     objects = CustomUserManager()
 

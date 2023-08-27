@@ -45,7 +45,9 @@ class LoginView(KnoxLoginView):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         login(request, user)
-        return super(LoginView, self).post(request, format=None)
+        response = super(LoginView, self).post(request, format=None)
+        response.data['status'] = 1
+        return Response(response.data)
     
 
 class LogoutView(KnoxLogoutView):

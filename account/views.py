@@ -17,6 +17,7 @@ from .serializers import (
     RegistrationSerializer
 )
 
+from api.utils import custom_response
 from .models import User
 
 
@@ -35,9 +36,19 @@ class RegisterAPIView(APIView):
         serializer = RegistrationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return custom_response(
+                success=1,
+                message='Registration successful.',
+                data=serializer.data,
+                status_code=status.HTTP_201_CREATED,
+            )
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+            return custom_response(
+                success=0,
+                message='Registration failed.',
+                error=serializer.errors,
+                status_code=status.HTTP_400_BAD_REQUEST,
+            )
 
 
 class LoginView(KnoxLoginView):
@@ -52,12 +63,19 @@ class LoginView(KnoxLoginView):
 
             res = super(LoginView, self).post(request, format=None)
 
-            response['status'] = 1
-            response.update(res.data)
+            return custom_response(
+                success=1,
+                message='Login successful.',
+                data=res.data,
+                status_code=status.HTTP_200_OK,
+            )
         else:
-            response['status'] = 0
-            response.update(serializer.errors)
-        return Response(response)
+            return custom_response(
+                success=0,
+                message='Login failed.',
+                error=serializer.errors,
+                status_code=status.HTTP_400_BAD_REQUEST,
+            )
     
 
 class LogoutView(KnoxLogoutView):

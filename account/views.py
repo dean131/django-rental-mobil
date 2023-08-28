@@ -2,7 +2,6 @@ from django.contrib.auth import login
 from rest_framework import status
 from rest_framework import permissions
 from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 
@@ -13,11 +12,11 @@ from knox.views import (
 )
 
 from .serializers import (
-    CustomUserSerializer,
-    RegistrationSerializer
+    CustomUserModelSerializer,
+    RegistrationModelSerializer
 )
 
-from api.utils import custom_response
+from rental_mobil.utils import custom_response
 from .models import User
 
 
@@ -25,7 +24,7 @@ from .models import User
 class UserModelViewSet(ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     queryset = User.objects.all()
-    serializer_class = CustomUserSerializer
+    serializer_class = CustomUserModelSerializer
 
 
 # AUTH
@@ -33,7 +32,7 @@ class RegisterAPIView(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request, format=None):
-        serializer = RegistrationSerializer(data=request.data)
+        serializer = RegistrationModelSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return custom_response(
@@ -70,10 +69,11 @@ class LoginView(KnoxLoginView):
                 status_code=status.HTTP_200_OK,
             )
         else:
+            print(serializer.errors)
             return custom_response(
                 success=0,
                 message='Login failed.',
-                error=serializer.errors,
+                error='Invalid username or password.',
                 status_code=status.HTTP_400_BAD_REQUEST,
             )
     

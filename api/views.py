@@ -1,8 +1,9 @@
 from datetime import datetime
-from rest_framework import filters
+from rest_framework import filters, status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAuthenticated
+
 from .serializers import (
     CarModelSerializer, 
     CarDynamicFieldsModelSerializer, 
@@ -11,6 +12,7 @@ from .serializers import (
 )
 
 from base.models import Car, Rental
+from rental_mobil.utils import custom_response
 
 
 class CarModelViewSet(ModelViewSet):
@@ -52,7 +54,12 @@ class CarModelViewSet(ModelViewSet):
                 'picture',
             ]
         serializer = self.get_serializer(queryset, fields=fields, many=True)
-        return Response(serializer.data)
+        return custom_response(
+            success=1,
+            message='Car list retrieved successfully.',
+            data=serializer.data,
+            status_code=status.HTTP_200_OK,
+        )
 
 
 class RentalModelViewSet(ModelViewSet):
@@ -72,17 +79,22 @@ class RentalModelViewSet(ModelViewSet):
             fields = fields[0].split(',')
         else:
             fields = [
-            'id',
-            'customer', 
-            'car', 
-            'status', 
-            'start_date', 
-            'end_date', 
-            'total_cost', 
-            'total_days',
-        ]
+                'id',
+                'customer', 
+                'car', 
+                'status', 
+                'start_date', 
+                'end_date', 
+                'total_cost', 
+                'total_days',
+            ]
         serializer = self.get_serializer(queryset, fields=fields, many=True)
-        return Response(serializer.data)
+        return custom_response(
+            success=1,
+            message='List of rentals retrieved successfully.',
+            data=serializer.data,
+            status_code=status.HTTP_200_OK,
+        )
     
     def create(self, request, *args, **kwargs):
         user = request.user
@@ -91,10 +103,12 @@ class RentalModelViewSet(ModelViewSet):
         car = Car.objects.get(id=car_id) 
 
         if car.is_booked == True:
-            return Response({
-                'status': 'error',
-                'message': 'Car is Booked',
-            })
+            return custom_response(
+                success=1,
+                message='The car is currently being booked by another user.',
+                error='car booking',
+                status_code=status.HTTP_403_FORBIDDEN,
+            )
 
         start_date = request.data.get('start_date')
         end_date = request.data.get('end_date')
@@ -115,4 +129,9 @@ class RentalModelViewSet(ModelViewSet):
         car.save()
 
         serializer = self.get_serializer(rental)
-        return Response(serializer.data)
+        return custom_response(
+            success=1,
+            message='Registration successful.',
+            data=serializer.data,
+            status_code=status.HTTP_201_CREATED,
+        )

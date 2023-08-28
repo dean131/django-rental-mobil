@@ -1,6 +1,5 @@
 from datetime import datetime
 from rest_framework import filters, status
-from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 
@@ -60,6 +59,16 @@ class CarModelViewSet(ModelViewSet):
             data=serializer.data,
             status_code=status.HTTP_200_OK,
         )
+    
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return custom_response(
+            success=1,
+            message='Car retrieved successfully.',
+            data=serializer.data,
+            status_code=status.HTTP_200_OK,
+        )
 
 
 class RentalModelViewSet(ModelViewSet):
@@ -88,10 +97,21 @@ class RentalModelViewSet(ModelViewSet):
                 'total_cost', 
                 'total_days',
             ]
+            
         serializer = self.get_serializer(queryset, fields=fields, many=True)
         return custom_response(
             success=1,
             message='List of rentals retrieved successfully.',
+            data=serializer.data,
+            status_code=status.HTTP_200_OK,
+        )
+    
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return custom_response(
+            success=1,
+            message='Rental retrieved successfully.',
             data=serializer.data,
             status_code=status.HTTP_200_OK,
         )
@@ -131,7 +151,7 @@ class RentalModelViewSet(ModelViewSet):
         serializer = self.get_serializer(rental)
         return custom_response(
             success=1,
-            message='Registration successful.',
+            message='Rental successful.',
             data=serializer.data,
             status_code=status.HTTP_201_CREATED,
         )

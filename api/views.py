@@ -1,4 +1,5 @@
 from datetime import datetime
+from rest_framework import filters
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
@@ -11,7 +12,7 @@ from .serializers import (
 
 from base.models import Car, Rental
 
-from rest_framework import filters
+
 class CarModelViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Car.objects.all()

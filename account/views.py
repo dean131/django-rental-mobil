@@ -1,4 +1,5 @@
 from django.contrib.auth import login
+from rest_framework import status
 from rest_framework import permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -32,16 +33,11 @@ class RegisterAPIView(APIView):
 
     def post(self, request, format=None):
         serializer = RegistrationSerializer(data=request.data)
-        response = {}
         if serializer.is_valid():
-            user = serializer.save()
-            response['status'] = 1
-            response['id'] = user.id
-            response.update(serializer.data)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            response['status'] = 0
-            response.update(serializer.errors)
-        return Response(response)    
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
 
 
 class LoginView(KnoxLoginView):

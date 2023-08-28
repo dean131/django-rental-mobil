@@ -12,7 +12,7 @@ from knox.views import (
 )
 
 from .serializers import (
-    CustomUserModelSerializer,
+    UserModelSerializer,
     RegistrationModelSerializer
 )
 
@@ -24,7 +24,7 @@ from .models import User
 class UserModelViewSet(ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     queryset = User.objects.all()
-    serializer_class = CustomUserModelSerializer
+    serializer_class = UserModelSerializer
 
 
 # AUTH
@@ -34,11 +34,12 @@ class RegisterAPIView(APIView):
     def post(self, request, format=None):
         serializer = RegistrationModelSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            user = serializer.save()
+            user_serializer = UserModelSerializer(user)
             return custom_response(
                 success=1,
                 message='Registration successful.',
-                data=serializer.data,
+                data=user_serializer.data,
                 status_code=status.HTTP_201_CREATED,
             )
         else:
@@ -55,7 +56,6 @@ class LoginView(KnoxLoginView):
 
     def post(self, request, format=None):
         serializer = AuthTokenSerializer(data=request.data)
-        response = {}
         if serializer.is_valid(): 
             user = serializer.validated_data['user']
             login(request, user)
@@ -73,7 +73,7 @@ class LoginView(KnoxLoginView):
             return custom_response(
                 success=0,
                 message='Login failed.',
-                error='Invalid username or password.',
+                error=serializer.errors,
                 status_code=status.HTTP_400_BAD_REQUEST,
             )
     

@@ -52,6 +52,7 @@ class CarModelViewSet(ModelViewSet):
                 'description',
                 'picture',
             ]
+            
         serializer = self.get_serializer(queryset, fields=fields, many=True)
         return custom_response(
             success=1,

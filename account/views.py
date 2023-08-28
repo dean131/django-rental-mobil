@@ -25,6 +25,24 @@ class UserModelViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserModelSerializer
 
+    def partial_update(self, request, *args, **kwargs):
+        serializer = UserModelSerializer(request.user, request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return custom_response(
+                success=1,
+                message='User update successful.',
+                data=serializer.data,
+                status_code=status.HTTP_200_OK,
+            )
+        else:
+            return custom_response(
+                success=0,
+                message='User update failed.',
+                error=serializer.errors,
+                status_code=status.HTTP_400_BAD_REQUEST,
+            )
+
 
 # AUTH
 class RegisterAPIView(APIView):

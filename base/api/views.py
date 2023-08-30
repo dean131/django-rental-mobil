@@ -11,7 +11,7 @@ from .serializers import (
 )
 
 from base.models import Car, Rental
-from rental_mobil.my_libraries import custom_response
+from rental_mobil.my_libraries import CustomResponse
 
 
 class CarModelViewSet(ModelViewSet):
@@ -54,21 +54,17 @@ class CarModelViewSet(ModelViewSet):
             ]
             
         serializer = self.get_serializer(queryset, fields=fields, many=True)
-        return custom_response(
-            success=1,
+        return CustomResponse.success(
             message='Car list retrieved successfully.',
             data=serializer.data,
-            status_code=status.HTTP_200_OK,
         )
     
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
-        return custom_response(
-            success=1,
+        return CustomResponse.succes(
             message='Car retrieved successfully.',
             data=serializer.data,
-            status_code=status.HTTP_200_OK,
         )
     
     def partial_update(self, request, *args, **kwargs):
@@ -76,18 +72,14 @@ class CarModelViewSet(ModelViewSet):
         serializer = CarModelSerializer(car, request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return custom_response(
-                success=1,
+            return CustomResponse.succes(
                 message='Car update successful.',
                 data=serializer.data,
-                status_code=status.HTTP_200_OK,
             )
         else:
-            return custom_response(
-                success=0,
+            return CustomResponse.error(
                 message='Car update failed.',
                 error=serializer.errors,
-                status_code=status.HTTP_400_BAD_REQUEST,
             )
 
 
@@ -119,21 +111,17 @@ class RentalModelViewSet(ModelViewSet):
             ]
             
         serializer = self.get_serializer(queryset, fields=fields, many=True)
-        return custom_response(
-            success=1,
+        return CustomResponse.succes(
             message='List of rentals retrieved successfully.',
             data=serializer.data,
-            status_code=status.HTTP_200_OK,
         )
     
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
-        return custom_response(
-            success=1,
+        return CustomResponse.succes(
             message='Rental retrieved successfully.',
             data=serializer.data,
-            status_code=status.HTTP_200_OK,
         )
     
     def create(self, request, *args, **kwargs):
@@ -143,8 +131,7 @@ class RentalModelViewSet(ModelViewSet):
         car = Car.objects.get(id=car_id) 
 
         if car.is_booked == True:
-            return custom_response(
-                success=1,
+            return CustomResponse.error(
                 message='The car is currently being booked by another user.',
                 error='car booking',
                 status_code=status.HTTP_403_FORBIDDEN,
@@ -169,8 +156,7 @@ class RentalModelViewSet(ModelViewSet):
         car.save()
 
         serializer = self.get_serializer(rental)
-        return custom_response(
-            success=1,
+        return CustomResponse.succes(
             message='Rental successful.',
             data=serializer.data,
             status_code=status.HTTP_201_CREATED,

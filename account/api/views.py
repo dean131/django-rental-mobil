@@ -15,7 +15,7 @@ from .serializers import (
     RegistrationModelSerializer
 )
 
-from rental_mobil.my_libraries import custom_response
+from rental_mobil.my_libraries import CustomResponse
 from ..models import User
 
 
@@ -35,39 +35,31 @@ class UserModelViewSet(ModelViewSet):
         #     return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
-        return custom_response(
-            success=1,
+        return CustomResponse.success(
             message='User list retrive successful.',
             data=serializer.data,
-            status_code=status.HTTP_200_OK,
         )
     
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
-        return custom_response(
-            success=1,
+        return CustomResponse.success(
             message='User retrive successful.',
             data=serializer.data,
-            status_code=status.HTTP_200_OK,
         )
 
     def partial_update(self, request, *args, **kwargs):
         serializer = UserModelSerializer(request.user, request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return custom_response(
-                success=1,
+            return CustomResponse.success(
                 message='User update successful.',
                 data=serializer.data,
-                status_code=status.HTTP_200_OK,
             )
         else:
-            return custom_response(
-                success=0,
+            return CustomResponse.error(
                 message='User update failed.',
                 error=serializer.errors,
-                status_code=status.HTTP_400_BAD_REQUEST,
             )
 
 
@@ -80,18 +72,15 @@ class RegisterAPIView(APIView):
         if serializer.is_valid():
             user = serializer.save()
             user_serializer = UserModelSerializer(user)
-            return custom_response(
-                success=1,
+            return CustomResponse.success(
                 message='Registration successful.',
                 data=user_serializer.data,
                 status_code=status.HTTP_201_CREATED,
             )
         else:
-            return custom_response(
-                success=0,
+            return CustomResponse.error(
                 message='Registration failed.',
                 error=serializer.errors,
-                status_code=status.HTTP_400_BAD_REQUEST,
             )
 
 
@@ -106,19 +95,15 @@ class LoginView(KnoxLoginView):
 
             res = super(LoginView, self).post(request, format=None)
 
-            return custom_response(
-                success=1,
+            return CustomResponse.success(
                 message='Login successful.',
                 data=res.data,
-                status_code=status.HTTP_200_OK,
             )
         else:
             print(serializer.errors)
-            return custom_response(
-                success=0,
+            return CustomResponse.error(
                 message='Login failed.',
                 error=serializer.errors,
-                status_code=status.HTTP_400_BAD_REQUEST,
             )
     
 

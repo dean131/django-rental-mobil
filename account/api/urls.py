@@ -8,6 +8,7 @@ from .views import (
     UserModelViewSet,
 )
 
+
 urlpatterns = [
     path('register/', RegisterAPIView.as_view(), name='register_user'),
     path('login/', LoginView.as_view(), name='knox_login'),

@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'knox',
 
     'base.apps.BaseConfig',
-    'api.apps.ApiConfig',
     'account.apps.AccountConfig',
 ]
 
@@ -55,7 +54,7 @@ REST_FRAMEWORK = {
 REST_KNOX = {
   'TOKEN_TTL': timedelta(hours=10),
   'TOKEN_LIMIT_PER_USER': None,
-  'USER_SERIALIZER': 'account.serializers.UserModelSerializer',
+  'USER_SERIALIZER': 'account.api.serializers.UserModelSerializer',
 }
 
 MIDDLEWARE = [

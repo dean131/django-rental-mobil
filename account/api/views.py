@@ -16,7 +16,7 @@ from .serializers import (
 )
 
 from rental_mobil.my_libraries import custom_response
-from .models import User
+from ..models import User
 
 
 # USER LIST 

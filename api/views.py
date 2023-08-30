@@ -11,7 +11,7 @@ from .serializers import (
 )
 
 from base.models import Car, Rental
-from rental_mobil.utils import custom_response
+from rental_mobil.my_libraries import custom_response
 
 
 class CarModelViewSet(ModelViewSet):

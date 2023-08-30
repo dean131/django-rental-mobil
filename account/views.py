@@ -15,7 +15,7 @@ from .serializers import (
     RegistrationModelSerializer
 )
 
-from rental_mobil.utils import custom_response
+from rental_mobil.my_libraries import custom_response
 from .models import User
 
 
@@ -24,6 +24,7 @@ class UserModelViewSet(ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = UserModelSerializer
+
 
     def partial_update(self, request, *args, **kwargs):
         serializer = UserModelSerializer(request.user, request.data, partial=True)
@@ -96,10 +97,10 @@ class LoginView(KnoxLoginView):
     
 
 class LogoutView(KnoxLogoutView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
 
 
 class LogoutAllView(KnoxLogoutAllView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
     
 

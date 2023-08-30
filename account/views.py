@@ -25,6 +25,32 @@ class UserModelViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserModelSerializer
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        ## Default built in
+        # page = self.paginate_queryset(queryset)
+        # if page is not None:
+        #     serializer = self.get_serializer(page, many=True)
+        #     return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return custom_response(
+            success=1,
+            message='User list retrive successful.',
+            data=serializer.data,
+            status_code=status.HTTP_200_OK,
+        )
+    
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return custom_response(
+            success=1,
+            message='User retrive successful.',
+            data=serializer.data,
+            status_code=status.HTTP_200_OK,
+        )
 
     def partial_update(self, request, *args, **kwargs):
         serializer = UserModelSerializer(request.user, request.data, partial=True)

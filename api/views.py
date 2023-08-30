@@ -70,6 +70,25 @@ class CarModelViewSet(ModelViewSet):
             data=serializer.data,
             status_code=status.HTTP_200_OK,
         )
+    
+    def partial_update(self, request, *args, **kwargs):
+        car = self.get_object()
+        serializer = CarModelSerializer(car, request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return custom_response(
+                success=1,
+                message='Car update successful.',
+                data=serializer.data,
+                status_code=status.HTTP_200_OK,
+            )
+        else:
+            return custom_response(
+                success=0,
+                message='Car update failed.',
+                error=serializer.errors,
+                status_code=status.HTTP_400_BAD_REQUEST,
+            )
 
 
 class RentalModelViewSet(ModelViewSet):

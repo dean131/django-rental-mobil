@@ -63,3 +63,9 @@ class User(AbstractBaseUser):
     @property
     def is_staff(self):
         return self.is_admin
+
+
+class OTPCode(models.Model):
+    code = models.IntegerField(max_length=6)
+    expire = models.DateTimeField()
+    user = models.OneToOneField(User, on_delete=models.CASCADE)

@@ -137,10 +137,10 @@ STATIC_URL = 'static/'
 
 MEDIA_ROOT = BASE_DIR / "static/image"
 
-# STATICFILES_DIRS = [
-#     BASE_DIR / "static",
-#     "/var/www/static/",
-# ]
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+    "/var/www/static/",
+]
 
 
 # Default primary key field type

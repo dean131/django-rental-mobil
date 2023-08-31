@@ -72,7 +72,7 @@ ROOT_URLCONF = 'rental_mobil.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -147,3 +147,12 @@ MEDIA_ROOT = BASE_DIR / "static/image"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# SMTP Configurations
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'ilhamdeanabdillah9c@gmail.com'
+EMAIL_HOST_PASSWORD = 'hukj nuqv gads xzan'
+EMAIL_USE_TLS = True

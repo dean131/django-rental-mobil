@@ -1,6 +1,9 @@
+import random
+
 from django.contrib.auth import login
-from rest_framework.views import APIView
+
 from rest_framework import permissions, status
+from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 
@@ -14,6 +17,10 @@ from .serializers import (
     UserModelSerializer,
     RegistrationModelSerializer
 )
+
+from django.core.mail import EmailMessage
+from django.conf import settings
+from django.template.loader import render_to_string
 
 from rental_mobil.my_libraries import CustomResponse
 from ..models import User
@@ -70,12 +77,27 @@ class RegisterAPIView(APIView):
     def post(self, request, format=None):
         serializer = RegistrationModelSerializer(data=request.data)
         if serializer.is_valid():
+
+            name = serializer.data.get('full_name').split()[0]
+            email = serializer.data.get('email')
+            otp_code = random.randrange(100000,999999)
+            template = render_to_string('otp.html', {'name': name, 'otp_code': otp_code})
+
+            email = EmailMessage(
+                'Email Verification',
+                template,
+                settings.EMAIL_HOST_USER,
+                [email,],
+            )
+            email.content_subtype = "html"
+            email.send(fail_silently=False)
+
+
             user = serializer.save()
             user_serializer = UserModelSerializer(user)
             return CustomResponse.success(
                 message='Registration successful.',
                 data=user_serializer.data,
-                status_code=status.HTTP_201_CREATED,
             )
         else:
             return CustomResponse.error(

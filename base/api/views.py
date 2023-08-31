@@ -1,5 +1,7 @@
 from datetime import datetime
-from rest_framework import filters, status
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import status
+from rest_framework.filters import SearchFilter
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 
@@ -11,6 +13,7 @@ from .serializers import (
 )
 
 from base.models import Car, Rental
+from .filters import CarListFilter
 from rental_mobil.my_libraries import CustomResponse
 
 
@@ -18,7 +21,8 @@ class CarModelViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Car.objects.all()
 
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_class = CarListFilter
     search_fields = [
         'name', 
         'car_type', 

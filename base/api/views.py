@@ -55,6 +55,7 @@ class CarModelViewSet(ModelViewSet):
                 'fuel_capacity',
                 'description',
                 'picture',
+                'is_booked',
             ]
             
         serializer = self.get_serializer(queryset, fields=fields, many=True)
@@ -66,7 +67,7 @@ class CarModelViewSet(ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
-        return CustomResponse.succes(
+        return CustomResponse.success(
             message='Car retrieved successfully.',
             data=serializer.data,
         )
@@ -76,7 +77,7 @@ class CarModelViewSet(ModelViewSet):
         serializer = CarModelSerializer(car, request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return CustomResponse.succes(
+            return CustomResponse.success(
                 message='Car update successful.',
                 data=serializer.data,
             )
@@ -112,10 +113,11 @@ class RentalModelViewSet(ModelViewSet):
                 'end_date', 
                 'total_cost', 
                 'total_days',
+                'late_fee',
             ]
             
         serializer = self.get_serializer(queryset, fields=fields, many=True)
-        return CustomResponse.succes(
+        return CustomResponse.success(
             message='List of rentals retrieved successfully.',
             data=serializer.data,
         )
@@ -123,7 +125,7 @@ class RentalModelViewSet(ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
-        return CustomResponse.succes(
+        return CustomResponse.success(
             message='Rental retrieved successfully.',
             data=serializer.data,
         )
@@ -160,7 +162,7 @@ class RentalModelViewSet(ModelViewSet):
         car.save()
 
         serializer = self.get_serializer(rental)
-        return CustomResponse.succes(
+        return CustomResponse.success(
             message='Rental successful.',
             data=serializer.data,
             status_code=status.HTTP_201_CREATED,

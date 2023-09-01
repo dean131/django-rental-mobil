@@ -35,6 +35,7 @@ class RentalModelSerializer(serializers.ModelSerializer):
             'end_date', 
             'total_cost', 
             'total_days',
+            'late_fee',
         ]
 
 

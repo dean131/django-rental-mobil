@@ -7,13 +7,20 @@ class RegistrationModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['full_name', 'email', 'password', 'password2',]
+        fields = '__all__'
 
 
     def save(self):
         user = User.objects.create_user(
             full_name=self.validated_data['full_name'],
             email=self.validated_data['email'],
+            gender=self.validated_data['gender'],
+            birth_date=self.validated_data['birth_date'],
+            phone_number=self.validated_data['phone_number'],
+            nik=self.validated_data['nik'],
+            profile_picture=self.validated_data['profile_picture'],
+            license_card_image=self.validated_data['license_card_image'],
+            id_card_image=self.validated_data['id_card_image'],
         )
 
         password = self.validated_data['password']
@@ -32,7 +39,6 @@ class UserModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'id', 
             'full_name', 
             'email', 
             'gender',
@@ -40,4 +46,6 @@ class UserModelSerializer(serializers.ModelSerializer):
             'phone_number',
             'nik',
             'profile_picture',
+            'license_card_image',
+            'id_card_image'
         ]

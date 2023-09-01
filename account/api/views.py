@@ -1,8 +1,10 @@
 import random
 
 from django.contrib.auth import login
+from django.utils import timezone
+from django.shortcuts import get_object_or_404
 
-from rest_framework import permissions, status
+from rest_framework import permissions
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.authtoken.serializers import AuthTokenSerializer
@@ -18,12 +20,9 @@ from .serializers import (
     RegistrationModelSerializer
 )
 
-from django.core.mail import EmailMessage
-from django.conf import settings
-from django.template.loader import render_to_string
-
 from rental_mobil.my_libraries import CustomResponse
-from ..models import User
+from ..models import User, OTPCode
+from rental_mobil.my_libraries import EmailSender
 
 
 # USER LIST 
@@ -75,35 +74,37 @@ class RegisterAPIView(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request, format=None):
-        serializer = RegistrationModelSerializer(data=request.data)
-        if serializer.is_valid():
+        otp_code = random.randint(1000,9999)
+        email = request.data.get('email')
+        name = request.data.get('full_name').split()[0]
 
-            name = serializer.data.get('full_name').split()[0]
-            email = serializer.data.get('email')
-            otp_code = random.randrange(100000,999999)
-            template = render_to_string('otp.html', {'name': name, 'otp_code': otp_code})
+        try:
+            user = User.objects.get(email=email, is_active=False)
+            serializer = UserModelSerializer(user, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
 
-            email = EmailMessage(
-                'Email Verification',
-                template,
-                settings.EMAIL_HOST_USER,
-                [email,],
-            )
-            email.content_subtype = "html"
-            email.send(fail_silently=False)
-
-
-            user = serializer.save()
-            user_serializer = UserModelSerializer(user)
-            return CustomResponse.success(
-                message='Registration successful.',
-                data=user_serializer.data,
-            )
-        else:
-            return CustomResponse.error(
-                message='Registration failed.',
-                error=serializer.errors,
-            )
+            otp_obj = get_object_or_404(OTPCode, user=user)
+            otp_obj.code = otp_code
+            otp_obj.save()
+            EmailSender.otp_email(email=email, otp_code=otp_code, name=name)
+            return CustomResponse.success(message=f'OTP code has been sent to {email}. Please check your email.')
+        except:
+            serializer = RegistrationModelSerializer(data=request.data)
+            if serializer.is_valid():
+                user = serializer.save()
+                OTPCode.objects.create(user=user, code=otp_code)
+                EmailSender.otp_email(email=email, otp_code=otp_code, name=name)
+                user_serializer = UserModelSerializer(user)
+                return CustomResponse.success(
+                    message='Registration successful.',
+                    data=user_serializer.data,
+                )
+            else:
+                return CustomResponse.error(
+                    message='Registration failed.',
+                    error=serializer.errors,
+                )
 
 
 class LoginView(KnoxLoginView):
@@ -135,5 +136,23 @@ class LogoutView(KnoxLogoutView):
 
 class LogoutAllView(KnoxLogoutAllView):
     permission_classes = (permissions.IsAuthenticated,)
+
+
+class OTPConfirmAPIView(APIView):
+    permission_classes = (permissions.AllowAny,)
+    
+    def post(self, request):
+        otp_code = request.data.get('otp_code')
+        email = request.data.get('email')
+
+        otp_obj = get_object_or_404(OTPCode, code=otp_code, user__email=email)
+
+        if otp_obj.expire > timezone.now():
+            user = otp_obj.user 
+            user.is_active = True
+            user.save()
+            return CustomResponse.success(message='OTP code is still Valid')
+            
+        return CustomResponse.error(message='OTP Code has expired')
     
 

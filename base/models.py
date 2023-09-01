@@ -5,8 +5,8 @@ from django.utils import timezone
 
 class Car(models.Model):
     TRANSMISSION_CHOICES = [
-        ('Auto', 'Automatic'),
-        ('Manual', 'Manual'),
+        ('A', 'Automatic'),
+        ('M', 'Manual'),
     ]
     
     name = models.CharField(max_length=100)
@@ -27,9 +27,9 @@ class Car(models.Model):
 
 class Rental(models.Model):
     STATUS_CHOICES = [
-        ('Active', 'Aktif'),
-        ('Pending', 'Menunggu'),
-        ('Completed', 'Selesai'),
+        ('A', 'Aktif'),
+        ('P', 'Menunggu'),
+        ('C', 'Selesai'),
     ]
     
     car = models.ForeignKey(Car, on_delete=models.CASCADE)

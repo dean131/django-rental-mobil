@@ -29,10 +29,14 @@ class CustomUserManager(BaseUserManager):
     
 
 class User(AbstractBaseUser):
+    GENDER_CHOICES = [
+        ('M', 'Male'),
+        ('F', 'Female'),
+    ]
 
     email = models.EmailField(verbose_name='email address', max_length=255, unique=True,)
     full_name = models.CharField(max_length=255)
-    gender = models.CharField(max_length=10, blank=True, null=True)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, blank=True, null=True)
     birth_date = models.DateField(blank=True, null=True)
     phone_number = models.CharField(max_length=20, blank=True, null=True) 
     nik = models.CharField(max_length=16, unique=True, blank=True, null=True)  
@@ -71,7 +75,7 @@ class OTPCode(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        self.expire = timezone.now() + timedelta(minutes=2)
+        self.expire = timezone.now() + timedelta(minutes=5)
         super(OTPCode, self).save(*args, **kwargs)
 
     def __str__(self):

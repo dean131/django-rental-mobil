@@ -74,7 +74,7 @@ class RegisterAPIView(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request, format=None):
-        otp_code = random.randint(1000,9999)
+        otp_code = random.randint(100000,999999)
         email = request.data.get('email')
         name = request.data.get('full_name').split()[0]
 

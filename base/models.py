@@ -38,7 +38,7 @@ class Rental(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     check_out_date = models.DateField(null=True, blank=True)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='P')
 
     def __str__(self):
         return f"Rental {self.id}: {self.car} by {self.customer} ({self.get_status_display()})"

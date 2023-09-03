@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block contents %}
+
+<div class="container d-flex justify-content-center">
+    <div class="col-md-6">
+        <!-- start card  -->
+        <div class="card">
+            <div class="card-header text-center">
+                <h4 class="card-title">Checkout Rental</h4>
+            </div>
+            <div class="row px-1">
+                <div class="col-3">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Customer</strong></li>
+                        <li class="list-group-item"><strong>Car</strong></li>
+                        <li class="list-group-item"><strong>Start Date</strong></li>
+                        <li class="list-group-item"><strong>End Date</strong></li>
+                        <li class="list-group-item"><strong>Total Cost</strong></li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>:</strong> {{rental.customer}}</li>
+                        <li class="list-group-item"><strong>:</strong> {{rental.car}}</li>
+                        <li class="list-group-item"><strong>:</strong> {{rental.start_date}}</li>
+                        <li class="list-group-item"><strong>:</strong> {{rental.end_date}}</li>
+                        <li class="list-group-item"><strong>:</strong> {{rental.total_cost}}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-footer text-end">
+                <form method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-primary" type="submit">Checkout</a>
+                </form>
+            </div>
+        </div>
+        <!-- end card  -->
+    </div>
+</div>
+
+                
+{% endblock %}

@@ -6,4 +6,4 @@ class CarListFilter(FilterSet):
     price = RangeFilter()
     class Meta:
         model = Car
-        fields = ['price']
+        fields = ['price', 'is_booked']

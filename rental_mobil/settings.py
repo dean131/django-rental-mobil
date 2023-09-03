@@ -40,12 +40,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'rest_framework',
-    'knox',
-
     'base.apps.BaseConfig',
     'account.apps.AccountConfig',
+
+    'crispy_forms',
+    'crispy_bootstrap5',
+    'rest_framework',
+    'knox',
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),

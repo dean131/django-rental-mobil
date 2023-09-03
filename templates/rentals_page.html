@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+
+{% block contents %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2">
+            {% include 'menu.html' %}
+        </div>
+        <!-- start table  -->
+        <div class="col-md shadow rounded-end p-2">
+            <div class="row mb-3">
+                <div class="col-10">
+                    <h2>Rental List</h2>
+                </div>
+                <div class="col d-flex justify-content-around">
+                    <a href="{% url 'add_rental' %}" class="btn btn-primary">Add Rental</a>
+                </div>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Customer</th>
+                        <th scope="col">Car</th>
+                        <th scope="col">Start date</th>
+                        <th scope="col">End date</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Total Cost</th>
+                        <th scope="col">Late Fee</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rental in rentals %}
+                    <tr>
+                        <th scope="col">{{forloop.counter}}</th>
+                        <td>{{rental.customer}}</td>
+                        <td>{{rental.car}}</td>
+                        <td>{{rental.start_date}}</td>
+                        <td>{{rental.end_date}}</td>
+                        <td>{{rental.status}}</td>
+                        <td>Rp{{rental.total_cost}}</td>
+                        <td>Rp{{rental.late_fee}}</td>
+                        <td class="d-flex justify-content-around">
+                            <!-- <button type="button" class="btn btn-warning edit-item" data-rentalid="{{ rental.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                Edit
+                            </button> -->
+                            <a href="{% url 'edit_rental' rental.id %}" class="btn btn-warning">Edit</a>
+                            <a href="{% url 'checkout_rental' rental.id %}" class="btn btn-secondary">Check</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- end table  -->
+    </div>
+</div>
+{% endblock %}
+
+{% block modal %}
+<!-- start modal  -->
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="rental-form" method="POST" action="/">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="customer" class="col-form-label">Customer:</label>
+                    <input type="text" class="form-control" name="customer" id="customer">
+                </div>
+                <div class="mb-3">
+                    <label for="car" class="col-form-label">Car:</label>
+                    <input type="text" class="form-control" name="car" id="car">
+                </div>
+                <div class="mb-3">
+                    <label for="start-date" class="col-form-label">Start Date:</label>
+                    <input type="text" class="form-control" name="start-date" id="start-date">
+                </div>
+                <div class="mb-3">
+                    <label for="end-date" class="col-form-label">End Date:</label>
+                    <input type="text" class="form-control" name="end-date" id="end-date">
+                </div>
+                <div class="mb-3">
+                    <label for="status" class="col-form-label">Status:</label>
+                    <select class="form-select" aria-label="Default select example" name="status" id="status">
+                        <option value="P">Pending</option>
+                        <option value="A">Active</option>
+                        <option value="C">Complete</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="total-cost" class="col-form-label">Total Cost:</label>
+                    <input type="text" class="form-control" name="total-cost" id="total-cost">
+                </div>
+                <input type="text" class="form-control" name="rental-id" id="rental-id" hidden>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" form="rental-form">Save changes</button>
+        </div>
+    </div>
+</div>
+</div> -->
+<!-- end modal  -->
+{% endblock %}
+
+{% block scripts %}
+<!-- start scripts -->
+<!-- <script>
+
+    $(document).ready(function() {
+
+        $(".edit-item").on("click", function() {
+            var tr = $(this).closest("tr")
+            var customerName = tr.find('td:nth-child(2)').text().trim();
+            var carName = tr.find('td:nth-child(3)').text().trim();
+            var startDate = tr.find('td:nth-child(4)').text().trim();
+            var endtDate = tr.find('td:nth-child(5)').text().trim();
+            var status = tr.find('td:nth-child(6)').text().trim();
+            var totalCost = tr.find('td:nth-child(7)').text().trim();
+            var rentalId = $(this).data('rentalid');
+
+            $('#customer').val(customerName);
+            $('#car').val(carName);
+            $('#start-date').val(startDate);
+            $('#end-date').val(endtDate);
+            $('#status').val(status);
+            $('#total-cost').val(totalCost);
+            $('#total-cost').val(totalCost);
+            $('#rental-id').val(rentalId);
+        });
+    });
+</script> -->
+<!-- end scripts -->
+{% endblock %}

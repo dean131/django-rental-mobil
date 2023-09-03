@@ -10,15 +10,15 @@ class Car(models.Model):
         ('M', 'Manual'),
     ]
     
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=255)
     car_type = models.CharField(max_length=50)
-    price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+    price = models.IntegerField(null=True)
     color = models.CharField(max_length=50)
     transmission = models.CharField(max_length=10, choices=TRANSMISSION_CHOICES)
     license_plate = models.CharField(max_length=15, unique=True)
-    passenger_capacity = models.PositiveIntegerField()
+    passenger_capacity = models.IntegerField()
     fuel_capacity = models.DecimalField(max_digits=5, decimal_places=2)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
     picture = models.ImageField(blank=True, null=True)
     is_booked = models.BooleanField(default=False)
 
@@ -47,7 +47,7 @@ class Rental(models.Model):
     def total_cost(self):
         days = (self.end_date - self.start_date).days
         total_price = self.car.price * days
-        return total_price
+        return int(total_price)
 
     @property
     def total_days(self):
@@ -61,5 +61,5 @@ class Rental(models.Model):
             if self.check_out_date > self.end_date:
                 days = (self.check_out_date - self.end_date).days
                 fee = days * (Decimal(0.02) * self.total_cost)
-        return fee
+        return int(fee)
     

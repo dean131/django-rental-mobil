@@ -12,7 +12,7 @@
         <div class="col-md shadow rounded-end p-2">
             <div class="row mb-3">
                 <div class="col-10">
-                    <h2>User List</h2>
+                    <h2>Car List</h2>
                 </div>
             </div>
             <div class="table-responsive">
@@ -21,25 +21,26 @@
                         <tr>
                             <th scope="col">No</th>
                             <th scope="col">Name</th>
-                            <th scope="col">Contacts</th>
-                            <th scope="col">NIK</th>
+                            <th scope="col">Price/day</th>
+                            <th scope="col">Status</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% if users %}
-                            {% for user in users %}
-                                <tr>
-                                    <th scope="col">{{forloop.counter}}</th>
-                                    <td>{{user.full_name}}</td>
-                                    <td>{{user.email}}<br>{{user.phone_number}}</td>
-                                    <td>{{user.nik}}</td>
-                                </tr>
-                            {% endfor %}
+                        {% if cars %}
+                        {% for car in cars %}
+                        <tr>
+                            <th scope="col">{{forloop.counter}}</th>
+                            <td>{{car.name}}</td>
+                            <td>{{car.price}}</td>
+                            <td>{{car.is_booked}}</td>
+                            
+                        </tr>
+                        {% endfor %}
                         {% else %}
-                            <tr>
-                                <td colspan="9" class="text-center">Data not found.</td>
-                            </tr>
+                        <tr>
+                            <td colspan="9" class="text-center">Data not found.</td>
+                        </tr>
                         {% endif %}
                     </tbody>
                 </table>

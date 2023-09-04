@@ -1,17 +1,17 @@
 <!-- start menu -->
 <div class="col shadow border rounded-start py-3">
     <p class="mb-3 text-center"><Strong>Halo {{ name }}</Strong></p>
-    <div class="list-group list-group-flush">
+    <div class="list-group list-group-flush border-top border-bottom">
         <a href="{% url 'home' %}" id="menu-1" class="list-group-item list-group-item-action">
             Dasboard
         </a>
-        <a href="{% url 'rental' %}" id="menu-2" class="list-group-item list-group-item-action">
+        <a href="{% url 'rentals_page' %}" id="menu-2" class="list-group-item list-group-item-action">
             Rentals
         </a>
-        <a href="{% url 'home' %}" id="menu-3" class="list-group-item list-group-item-action">
+        <a href="{% url 'users_page' %}" id="menu-3" class="list-group-item list-group-item-action">
             Users
         </a>
-        <a href="{% url 'home' %}" id="menu-4" class="list-group-item list-group-item-action">
+        <a href="{% url 'cars_page' %}" id="menu-4" class="list-group-item list-group-item-action">
             Cars
         </a>
     </div>

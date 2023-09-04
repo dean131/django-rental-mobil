@@ -6,8 +6,8 @@ from decimal import Decimal
 
 class Car(models.Model):
     TRANSMISSION_CHOICES = [
-        ('A', 'Automatic'),
-        ('M', 'Manual'),
+        ('automatic', 'Automatic'),
+        ('manual', 'Manual'),
     ]
     
     name = models.CharField(max_length=255)
@@ -28,9 +28,9 @@ class Car(models.Model):
 
 class Rental(models.Model):
     STATUS_CHOICES = [
-        ('A', 'Aktif'),
-        ('P', 'Menunggu'),
-        ('C', 'Selesai'),
+        ('active', 'Active'),
+        ('pending', 'Pending'),
+        ('complte', 'Complete'),
     ]
     
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
@@ -38,7 +38,7 @@ class Rental(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     check_out_date = models.DateField(null=True, blank=True)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='P')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
 
     def __str__(self):
         return f"Rental {self.id}: {self.car} by {self.customer} ({self.get_status_display()})"

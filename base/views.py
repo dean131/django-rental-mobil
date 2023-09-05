@@ -80,7 +80,7 @@ def checkout_rental(request, pk):
     rental = Rental.objects.get(id=pk)
 
     if request.method == 'POST':
-        rental.status = 'C'
+        rental.status = 'selesai'
         rental.check_out_date = datetime.today()
         rental.car.is_booked = False
         rental.car.save()

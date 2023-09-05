@@ -13,7 +13,7 @@ from .serializers import (
 )
 
 from base.models import Car, Rental
-from .filters import CarListFilter
+from .filters import CarListFilter, RentalListFilter
 from rental_mobil.my_libraries import CustomResponse
 
 
@@ -91,6 +91,9 @@ class CarModelViewSet(ModelViewSet):
 class RentalModelViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Rental.objects.all()
+
+    filter_backends = [DjangoFilterBackend,]
+    filterset_class = RentalListFilter
 
     def get_serializer_class(self):
         if self.action == 'list':

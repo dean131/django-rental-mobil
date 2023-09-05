@@ -40,6 +40,7 @@ class RentalModelSerializer(serializers.ModelSerializer):
 
 
 class RentalDynamicFieldsModelSerializer(RentalModelSerializer):
+    car = CarModelSerializer()
 
     def __init__(self, *args, **kwargs):
         fields = kwargs.pop('fields', None)
@@ -52,5 +53,3 @@ class RentalDynamicFieldsModelSerializer(RentalModelSerializer):
                 self.fields.pop(field_name)
 
 
-class DetailRentalModelSerializer(RentalModelSerializer):
-    car = CarModelSerializer()

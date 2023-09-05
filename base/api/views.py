@@ -10,7 +10,6 @@ from .serializers import (
     CarDynamicFieldsModelSerializer, 
     RentalModelSerializer,
     RentalDynamicFieldsModelSerializer,
-    DetailRentalModelSerializer,
 )
 
 from base.models import Car, Rental
@@ -97,10 +96,8 @@ class RentalModelViewSet(ModelViewSet):
     filterset_class = RentalListFilter
 
     def get_serializer_class(self):
-        if self.action == 'list':
+        if self.action == 'list' or 'retrive':
             return RentalDynamicFieldsModelSerializer 
-        elif self.action == 'retrieve':
-            return DetailRentalModelSerializer 
         else:
             return RentalModelSerializer
 

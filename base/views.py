@@ -1,20 +1,20 @@
 from datetime import datetime
 
-from django.shortcuts import render, redirect
+from django.db.models import Q
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from django.db.models import Q
+from django.shortcuts import render, redirect
 
-from .models import Rental, Car
 from account.models import User
+from .models import Rental, Car
 from .forms import RentalModelForm
 
 
 @login_required(login_url='login_page')
 def home(request):
     total_customers = User.objects.all().count()
-    total_rentals = Rental.objects.filter(Q(status='P') | Q(status='A')).count()
+    total_rentals = Rental.objects.filter(Q(status='pending') | Q(status='aktif')).count()
     available_cars = Car.objects.filter(is_booked=False).count()
 
     context = {
@@ -43,14 +43,17 @@ def add_rental(request):
     form = RentalModelForm()
 
     if request.method == 'POST':
-        form = RentalModelForm(request.POST)
-        if form.is_valid():
-            car_id = form.data.get('car')
-            car = Car.objects.get(id=car_id)
-            car.is_booked = True
-            car.save()
-            form.save()
-            return redirect('rentals_page')
+        car_id = request.POST.get('car')
+        car = Car.objects.get(id=car_id)
+        if car.is_booked == False:
+            form = RentalModelForm(request.POST)
+            if form.is_valid():
+                car.is_booked = True
+                car.save()
+                form.save()
+                return redirect('rentals_page')
+        else:
+            messages.error(message='The car is currently being booked by another user.', extra_tags='danger')
     
     context = {
         'form': form
@@ -93,6 +96,8 @@ def checkout_rental(request, pk):
     }    
     return render(request, 'checkout_rental.html', context)
 
+
+@login_required(login_url='login_page')
 def cars_page(request):
     cars = Car.objects.all()
     context = {
@@ -102,6 +107,8 @@ def cars_page(request):
     }
     return render(request, 'cars_page.html', context)
 
+
+@login_required(login_url='login_page')
 def users_page(request):
     users = User.objects.filter(is_admin=False)
     context = {
@@ -110,6 +117,7 @@ def users_page(request):
         'name': str(request.user).split()[0]
     }
     return render(request, 'users_page.html', context)
+
 
 def login_page(request):
     if request.user.is_authenticated:
@@ -130,6 +138,7 @@ def login_page(request):
         'page': 'login_page'
     }
     return render(request, 'login_page.html', context)
+
 
 @login_required(login_url='login_page')
 def logout_user(requset):

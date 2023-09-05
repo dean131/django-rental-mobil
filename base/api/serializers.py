@@ -10,6 +10,7 @@ class CarModelSerializer(serializers.ModelSerializer):
         model = Car
         fields = '__all__'
         
+
 class CarDynamicFieldsModelSerializer(CarModelSerializer):
 
     def __init__(self, *args, **kwargs):
@@ -42,7 +43,6 @@ class RentalModelSerializer(serializers.ModelSerializer):
 class RentalDynamicFieldsModelSerializer(RentalModelSerializer):
     car = serializers.SerializerMethodField('get_car')
     
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         fields = self.context['fields']

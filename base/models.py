@@ -28,9 +28,9 @@ class Car(models.Model):
 
 class Rental(models.Model):
     STATUS_CHOICES = [
-        ('active', 'Active'),
+        ('aktif', 'Aktif'),
         ('pending', 'Pending'),
-        ('complte', 'Complete'),
+        ('selesai', 'Selesai'),
     ]
     
     car = models.ForeignKey(Car, on_delete=models.CASCADE)

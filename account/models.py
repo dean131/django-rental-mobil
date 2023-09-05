@@ -30,8 +30,8 @@ class CustomUserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     GENDER_CHOICES = [
-        ('male', 'Male'),
-        ('female', 'Female'),
+        ('laki-laki', 'Laki-laki'),
+        ('perempuan', 'Perempuan'),
     ]
 
     email = models.EmailField(verbose_name='email address', max_length=255, unique=True,)

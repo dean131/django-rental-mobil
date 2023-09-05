@@ -58,7 +58,7 @@ class CarModelViewSet(ModelViewSet):
                 'is_booked',
             ]
             
-        serializer = self.get_serializer(queryset, fields=fields, many=True)
+        serializer = self.get_serializer(queryset, many=True, fields=fields)
         return CustomResponse.success(
             message='Car list retrieved successfully.',
             data=serializer.data,
@@ -104,6 +104,7 @@ class RentalModelViewSet(ModelViewSet):
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         fields = request.query_params.getlist('fields')
+        child_fields = request.query_params.getlist('child_fields')[0].split(',')
         if fields:
             fields = fields[0].split(',')
         else:
@@ -119,7 +120,7 @@ class RentalModelViewSet(ModelViewSet):
                 'late_fee',
             ]
             
-        serializer = self.get_serializer(queryset, fields=fields, many=True)
+        serializer = self.get_serializer(queryset, fields=fields, many=True, context={'child_fields': child_fields})
         return CustomResponse.success(
             message='List of rentals retrieved successfully.',
             data=serializer.data,
@@ -127,7 +128,9 @@ class RentalModelViewSet(ModelViewSet):
     
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        serializer = self.get_serializer(instance)
+        fields = request.query_params.getlist('fields')[0].split(',')
+        child_fields = request.query_params.getlist('child_fields')[0].split(',')
+        serializer = self.get_serializer(instance, fields=fields, context={'child_fields': child_fields})
         return CustomResponse.success(
             message='Rental retrieved successfully.',
             data=serializer.data,

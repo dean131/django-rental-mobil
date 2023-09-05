@@ -40,7 +40,8 @@ class RentalModelSerializer(serializers.ModelSerializer):
 
 
 class RentalDynamicFieldsModelSerializer(RentalModelSerializer):
-    car = CarModelSerializer()
+    car = serializers.SerializerMethodField()
+    
 
     def __init__(self, *args, **kwargs):
         fields = kwargs.pop('fields', None)
@@ -51,5 +52,13 @@ class RentalDynamicFieldsModelSerializer(RentalModelSerializer):
             existing = set(self.fields)
             for field_name in existing - allowed:
                 self.fields.pop(field_name)
+
+    def get_car(self, obj):
+        return CarDynamicFieldsModelSerializer(instance=obj.car, fields=self.context['child_fields']).data
+
+    
+
+
+    
 
 

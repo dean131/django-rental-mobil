@@ -13,10 +13,10 @@ class CarModelSerializer(serializers.ModelSerializer):
 class CarDynamicFieldsModelSerializer(CarModelSerializer):
 
     def __init__(self, *args, **kwargs):
-        fields = kwargs.pop('fields', None)
         super().__init__(*args, **kwargs)
+        fields = self.context['fields']
 
-        if fields is not None:
+        if len(fields) > 0:
             allowed = set(fields)
             existing = set(self.fields)
             for field_name in existing - allowed:
@@ -40,21 +40,24 @@ class RentalModelSerializer(serializers.ModelSerializer):
 
 
 class RentalDynamicFieldsModelSerializer(RentalModelSerializer):
-    car = serializers.SerializerMethodField()
+    car = serializers.SerializerMethodField('get_car')
     
 
     def __init__(self, *args, **kwargs):
-        fields = kwargs.pop('fields', None)
         super().__init__(*args, **kwargs)
+        fields = self.context['fields']
 
-        if fields is not None:
+        if len(fields) > 0:
             allowed = set(fields)
             existing = set(self.fields)
             for field_name in existing - allowed:
                 self.fields.pop(field_name)
 
     def get_car(self, obj):
-        return CarDynamicFieldsModelSerializer(instance=obj.car, fields=self.context['child_fields']).data
+        context = {
+            'fields': self.context['child_fields']
+        }
+        return CarDynamicFieldsModelSerializer(instance=obj.car, context=context).data
 
     
 

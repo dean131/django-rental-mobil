@@ -45,6 +45,7 @@ class CarModelViewSet(ModelViewSet):
 
         context = {
             'fields': fields,
+            'request': request,
         }
         serializer = self.get_serializer(queryset, many=True, context=context)
         return CustomResponse.success(
@@ -60,6 +61,7 @@ class CarModelViewSet(ModelViewSet):
 
         context = {
             'fields': fields,
+            'request': request,
         }
         serializer = self.get_serializer(instance, context=context)
         return CustomResponse.success(
@@ -109,6 +111,7 @@ class RentalModelViewSet(ModelViewSet):
         context = {
             'child_fields': child_fields,
             'fields': fields,
+            'request': request,
         }
         serializer = self.get_serializer(queryset, many=True, context=context)
         return CustomResponse.success(
@@ -129,6 +132,7 @@ class RentalModelViewSet(ModelViewSet):
         context = {
             'child_fields': child_fields,
             'fields': fields,
+            'request': request,
         }
         serializer = self.get_serializer(instance, context=context)
         return CustomResponse.success(

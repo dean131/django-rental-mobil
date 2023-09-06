@@ -54,10 +54,10 @@ class RentalDynamicFieldsModelSerializer(RentalModelSerializer):
                 self.fields.pop(field_name)
 
     def get_car(self, obj):
-        context = {
-            'fields': self.context['child_fields']
-        }
-        return CarDynamicFieldsModelSerializer(instance=obj.car, context=context).data
+        self.context.update({
+            'fields': self.context['child_fields'],
+        })
+        return CarDynamicFieldsModelSerializer(instance=obj.car, context=self.context).data
 
     
 

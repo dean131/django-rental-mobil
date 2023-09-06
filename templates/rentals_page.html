@@ -123,41 +123,42 @@
 
 {% block scripts %}
 <!-- start scripts -->
-<!-- <script>
+<script>
+    $('#collapseRental').collapse('show');
 
-    $(document).ready(function() {
+    // $(document).ready(function() {
 
-        $(".detail-rental").on("click", function() {
-            var tr = $(this).closest("tr")
-            var customerName = tr.find('td:nth-child(2)').text().trim();
-            var carName = tr.find('td:nth-child(3)').text().trim();
-            var startDate = tr.find('td:nth-child(4)').text().trim();
-            var endtDate = tr.find('td:nth-child(5)').text().trim();
-            var status = tr.find('td:nth-child(6)').text().trim();
-            var totalCost = tr.find('td:nth-child(7)').text().trim();
-            var rentalId = $(this).data('rentalid');
+    //     $(".detail-rental").on("click", function() {
+    //         var tr = $(this).closest("tr")
+    //         var customerName = tr.find('td:nth-child(2)').text().trim();
+    //         var carName = tr.find('td:nth-child(3)').text().trim();
+    //         var startDate = tr.find('td:nth-child(4)').text().trim();
+    //         var endtDate = tr.find('td:nth-child(5)').text().trim();
+    //         var status = tr.find('td:nth-child(6)').text().trim();
+    //         var totalCost = tr.find('td:nth-child(7)').text().trim();
+    //         var rentalId = $(this).data('rentalid');
 
-            $('#customer').val(customerName);
-            $('#car').val(carName);
-            $('#start-date').val(startDate);
-            $('#end-date').val(endtDate);
-            $('#status').val(status);
-            $('#total-cost').val(totalCost);
-            $('#total-cost').val(totalCost);
-            $('#rental-id').val(rentalId);
-        });
+    //         $('#customer').val(customerName);
+    //         $('#car').val(carName);
+    //         $('#start-date').val(startDate);
+    //         $('#end-date').val(endtDate);
+    //         $('#status').val(status);
+    //         $('#total-cost').val(totalCost);
+    //         $('#total-cost').val(totalCost);
+    //         $('#rental-id').val(rentalId);
+    //     });
 
-        $.ajax({
-            url: 'http://127.0.0.1:8000/api/cars/',
-            method : 'GET',
-            headers: {
-                            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-                    },
-            success: function (data) {console.log(data)},
-            error: function (data) {console.log(data)}
+    //     $.ajax({
+    //         url: 'http://127.0.0.1:8000/api/cars/',
+    //         method : 'GET',
+    //         headers: {
+    //                         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+    //                 },
+    //         success: function (data) {console.log(data)},
+    //         error: function (data) {console.log(data)}
                 
-            });
-    }); -->
+    //         });
+    // });
 </script>
 <!-- end scripts -->
 {% endblock %}

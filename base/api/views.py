@@ -18,10 +18,11 @@ from rental_mobil.my_libraries import CustomResponse
 
 
 class CarModelViewSet(ModelViewSet):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated,]
     queryset = Car.objects.all()
+    serializer_class = CarModelSerializer
 
-    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filter_backends = [DjangoFilterBackend, SearchFilter,]
     filterset_class = CarListFilter
     search_fields = [
         'name', 
@@ -32,10 +33,9 @@ class CarModelViewSet(ModelViewSet):
     ]
 
     def get_serializer_class(self):
-        if self.action == 'list' or 'retrieve':
+        if self.action in ['list', 'retrieve',]:
             return CarDynamicFieldsModelSerializer 
-        else:
-            return CarModelSerializer
+        self.serializer_class
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -88,17 +88,15 @@ class CarModelViewSet(ModelViewSet):
 class RentalModelViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Rental.objects.all()
+    serializer_class = RentalModelSerializer
 
     filter_backends = [DjangoFilterBackend,]
     filterset_class = RentalListFilter
 
     def get_serializer_class(self):
-        if self.action == 'list' or 'retrive':
+        if self.action in ['list', 'retrieve',]:
             return RentalDynamicFieldsModelSerializer 
-        elif self.action == 'create':
-            return RentalModelSerializer
-        else:
-            return RentalModelSerializer
+        return RentalModelSerializer
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -173,7 +171,7 @@ class RentalModelViewSet(ModelViewSet):
         car.is_booked = True
         car.save()
 
-        serializer = RentalModelSerializer(rental)
+        serializer = self.get_serializer(rental)
         return CustomResponse.success(
             message='Rental successful.',
             data=serializer.data,

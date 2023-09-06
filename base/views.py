@@ -29,7 +29,7 @@ def home(request):
 
 @login_required(login_url='login_page')
 def rentals_page(request):
-    rentals = Rental.objects.all()
+    rentals = Rental.objects.all().order_by('status')
     context = {
         'name': (request.user.full_name).split()[0],
         'rentals': rentals,

@@ -13,27 +13,33 @@ from .forms import RentalModelForm
 
 @login_required(login_url='login_page')
 def home(request):
-    total_customers = User.objects.all().count()
+    total_customers = User.objects.filter(is_admin=False).count()
     total_rentals = Rental.objects.filter(Q(status='pending') | Q(status='aktif')).count()
     available_cars = Car.objects.filter(is_booked=False).count()
 
     context = {
         'name': (request.user.full_name).split()[0],
-        'page': 'home',
         'total_customers': total_customers,
         'total_rentals': total_rentals,
         'available_cars': available_cars,
+        'menus': {
+            'menu': 'homeMenu',
+            'submenu': '',
+        },
     }
     return render(request, 'home.html', context)
 
 
 @login_required(login_url='login_page')
 def rentals_page(request):
-    rentals = Rental.objects.all().order_by('status')
+    rentals = Rental.objects.filter(Q(status='pending') | Q(status='aktif')).order_by('status')
     context = {
         'name': (request.user.full_name).split()[0],
         'rentals': rentals,
-        'page': 'rental',
+        'menus': {
+            'menu': 'rentalsMenu',
+            'submenu': 'retalListMenu',
+        },
     }
     return render(request, 'rentals_page.html', context)
 
@@ -98,12 +104,29 @@ def checkout_rental(request, pk):
 
 
 @login_required(login_url='login_page')
+def checked_out_rentals_page(request):
+    rentals = Rental.objects.filter(status='selesai').order_by('status')
+    context = {
+        'name': (request.user.full_name).split()[0],
+        'rentals': rentals,
+        'menus': {
+            'menu': 'rentalsMenu',
+            'submenu': 'checkedOutRentalsMenu',
+        },
+    }
+    return render(request, 'checked_out_rentals_page.html', context)
+
+
+@login_required(login_url='login_page')
 def cars_page(request):
     cars = Car.objects.all()
     context = {
         'cars': cars,
-        'page': 'car',
-        'name': str(request.user).split()[0]
+        'name': str(request.user).split()[0],
+        'menus': {
+            'menu': 'carsMenu',
+            'submenu': '',
+        },
     }
     return render(request, 'cars_page.html', context)
 
@@ -113,8 +136,11 @@ def users_page(request):
     users = User.objects.filter(is_admin=False)
     context = {
         'users': users,
-        'page': 'user',
-        'name': str(request.user).split()[0]
+        'name': str(request.user).split()[0],
+        'menus': {
+            'menu': 'usersMenu',
+            'submenu': '',
+        },
     }
     return render(request, 'users_page.html', context)
 

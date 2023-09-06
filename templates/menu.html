@@ -1,24 +1,25 @@
-<!-- start menu -->
 <div class="col shadow border rounded-start py-3">
     <p class="mb-3 text-center"><Strong>Halo {{ name }}</Strong></p>
     <div class="list-group list-group-flush border-top border-bottom">
-        <a href="{% url 'home' %}" class="list-group-item list-group-item-action menu-1">
+        <a href="{% url 'home' %}" id="homeMenu" class="list-group-item list-group-item-action">
             Dasboard
         </a>
-        <a class="list-group-item list-group-item-action menu-2" data-bs-toggle="collapse" href="#collapseRental" role="button" aria-expanded="false" aria-controls="collapseRental">
+        <a id="rentalsMenu" class="list-group-item list-group-item-action" data-bs-toggle="collapse" href="#collapseRental" role="button" aria-expanded="false" aria-controls="collapseRental">
             Rentals
         </a>
         <div class="collapse" id="collapseRental">
-            <a href="{% url 'rentals_page' %}" class="list-group-item list-group-item-action menu-2">
+            <a href="{% url 'rentals_page' %}" id="retalListMenu" class="list-group-item list-group-item-action">
                 Rentals List
             </a>
+            <a href="{% url 'checked_out_rentals_page' %}" id="checkedOutRentalsMenu" class="list-group-item list-group-item-action">
+                Checked out Rentals List
+            </a>
         </div>
-        <a href="{% url 'users_page' %}" class="list-group-item list-group-item-action menu-3">
+        <a href="{% url 'users_page' %}" id="usersMenu" class="list-group-item list-group-item-action">
             Users
         </a>
-        <a href="{% url 'cars_page' %}" class="list-group-item list-group-item-action menu-4">
+        <a href="{% url 'cars_page' %}" id="carsMenu" class="list-group-item list-group-item-action">
             Cars
         </a>
     </div>
 </div>
-<!-- end menu -->

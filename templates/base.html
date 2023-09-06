@@ -25,42 +25,27 @@
         {% endif %}
         <!-- end message -->
 
-        <!-- start content  -->
         {% block contents %}
         {% endblock %}
-        <!-- end content  -->
 
         {% block modal %}
         {% endblock %}
 
-        <!-- start scripts -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.js" integrity="sha512-+k1pnlgt4F1H8L7t3z95o3/KO+o78INEcXTbnoJQ/F2VqDVhWoaiVml/OEHv9HsVgxUaVW+IbiZPUJQfF/YxZw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
         <script>
-            var menu;
-            switch('{{page}}') {
-                case 'home':
-                    menu = document.getElementsByClassName('menu-1');
-                    break;
-                case 'rental':
-                    menu = document.getElementsByClassName('menu-2')
-                    break;
-                case 'user':
-                    menu = document.getElementsByClassName('menu-3')
-                    break;
-                case 'car':
-                    menu = document.getElementsByClassName('menu-4')
-                    break;
-            }
-                // menu.classList.add('active');
-                for (let i = 0; i < menu.length; i++) {
-                    const element = menu[i];
-                    element.classList.add('active');
+            $(document).ready(function() {
+                
+                document.getElementById('{{menus.menu}}').classList.add('active')
+                var submenu = '{{menus.submenu}}'
+                if (submenu) {
+                    document.getElementById('{{menus.submenu}}').classList.add('list-group-item-primary')
                 }
+                    
+                // {% block scripts %}
+                // {% endblock %}
+            });
         </script>
-        {% block scripts %}
-        {% endblock %}
-        <!-- end scripts -->
 
     </body>
 </html>

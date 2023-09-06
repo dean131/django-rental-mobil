@@ -1,25 +1,27 @@
-<div class="col shadow border rounded-start py-3">
-    <p class="mb-3 text-center"><Strong>Halo {{ name }}</Strong></p>
-    <div class="list-group list-group-flush border-top border-bottom">
-        <a href="{% url 'home' %}" id="homeMenu" class="list-group-item list-group-item-action">
-            Dasboard
-        </a>
-        <a id="rentalsMenu" class="list-group-item list-group-item-action" data-bs-toggle="collapse" href="#collapseRental" role="button" aria-expanded="false" aria-controls="collapseRental">
-            Rentals
-        </a>
-        <div class="collapse" id="collapseRental">
-            <a href="{% url 'rentals_page' %}" id="retalListMenu" class="list-group-item list-group-item-action">
-                Rentals List
+<div class="col-lg-2 mb-3">
+    <div class="col shadow border rounded-start py-3">
+        <p class="mb-3 text-center"><Strong>Halo {{ name }}</Strong></p>
+        <div class="list-group list-group-flush border-top border-bottom">
+            <a href="{% url 'home' %}" id="homeMenu" class="list-group-item list-group-item-action">
+                Dasboard
             </a>
-            <a href="{% url 'checked_out_rentals_page' %}" id="checkedOutRentalsMenu" class="list-group-item list-group-item-action">
-                Checked out Rentals List
+            <a id="rentalsMenu" class="list-group-item list-group-item-action" data-bs-toggle="collapse" href="#collapseRental" role="button" aria-expanded="false" aria-controls="collapseRental">
+                Rentals
+            </a>
+            <div class="collapse" id="collapseRental">
+                <a href="{% url 'rentals_page' %}" id="retalListMenu" class="list-group-item list-group-item-action">
+                    Rentals List
+                </a>
+                <a href="{% url 'checked_out_rentals_page' %}" id="checkedOutRentalsMenu" class="list-group-item list-group-item-action">
+                    Checked out Rentals List
+                </a>
+            </div>
+            <a href="{% url 'users_page' %}" id="usersMenu" class="list-group-item list-group-item-action">
+                Users
+            </a>
+            <a href="{% url 'cars_page' %}" id="carsMenu" class="list-group-item list-group-item-action">
+                Cars
             </a>
         </div>
-        <a href="{% url 'users_page' %}" id="usersMenu" class="list-group-item list-group-item-action">
-            Users
-        </a>
-        <a href="{% url 'cars_page' %}" id="carsMenu" class="list-group-item list-group-item-action">
-            Cars
-        </a>
     </div>
 </div>

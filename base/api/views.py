@@ -95,6 +95,8 @@ class RentalModelViewSet(ModelViewSet):
     def get_serializer_class(self):
         if self.action == 'list' or 'retrive':
             return RentalDynamicFieldsModelSerializer 
+        elif self.action == 'create':
+            return RentalModelSerializer
         else:
             return RentalModelSerializer
 
@@ -171,7 +173,7 @@ class RentalModelViewSet(ModelViewSet):
         car.is_booked = True
         car.save()
 
-        serializer = self.get_serializer(rental)
+        serializer = RentalModelSerializer(rental)
         return CustomResponse.success(
             message='Rental successful.',
             data=serializer.data,

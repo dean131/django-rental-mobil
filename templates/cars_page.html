@@ -2,51 +2,46 @@
 
 
 {% block contents %}
-
-<div class="container-fluid">
-    <div class="row">
         
         {% include 'menu.html' %}
 
-        <!-- start table  -->
-        <div class="col-md shadow rounded-end p-2">
-            <div class="row mb-3">
-                <div class="col-10">
-                    <h2>Car List</h2>
+        <div class="col-lg">
+            <div class="shadow rounded-end p-2">
+                <div class="row mb-3">
+                    <div class="col-10">
+                        <h2>Car List</h2>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Price/day</th>
+                                <th scope="col">Status</th>
+                                <th scope="col" class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if cars %}
+                            {% for car in cars %}
+                            <tr>
+                                <th scope="col">{{forloop.counter}}</th>
+                                <td>{{car.name}}</td>
+                                <td>{{car.price}}</td>
+                                <td>{{car.is_booked}}</td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="9" class="text-center">Data not found.</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th scope="col">No</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Price/day</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% if cars %}
-                        {% for car in cars %}
-                        <tr>
-                            <th scope="col">{{forloop.counter}}</th>
-                            <td>{{car.name}}</td>
-                            <td>{{car.price}}</td>
-                            <td>{{car.is_booked}}</td>
-                            
-                        </tr>
-                        {% endfor %}
-                        {% else %}
-                        <tr>
-                            <td colspan="9" class="text-center">Data not found.</td>
-                        </tr>
-                        {% endif %}
-                    </tbody>
-                </table>
-            </div>
         </div>
-        <!-- end table  -->
-    </div>
-</div>
+
 {% endblock %}

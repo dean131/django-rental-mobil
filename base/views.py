@@ -1,4 +1,5 @@
-from datetime import datetime
+from django.utils import timezone
+from decimal import Decimal
 
 from django.db.models import Q
 from django.contrib import messages
@@ -104,20 +105,41 @@ def delete_rental(request, pk):
 
 
 @login_required(login_url='login_page')
+def checkin_rental(request, pk):
+    rental = Rental.objects.get(id=pk)
+
+    if request.method == 'POST':
+        rental.status = 'aktif'
+        rental.save()
+        messages.success(request, message='Rental checkin successfully')
+        return redirect('rentals_page')
+    context ={
+        'rental': rental,
+    }
+    return render(request, 'checkin_rental.html', context=context)
+
+
+@login_required(login_url='login_page')
 def checkout_rental(request, pk):
     rental = Rental.objects.get(id=pk)
 
     if request.method == 'POST':
         rental.status = 'selesai'
-        rental.check_out_date = datetime.today()
+        rental.check_out_date = timezone.now().date()
         rental.car.is_booked = False
         rental.car.save()
         rental.save()
         messages.success(request, "Rental Checked Out.")
         return redirect('rentals_page')
+    
+    late_fee = 0
+    if timezone.now().date() > rental.end_date:
+        days = (timezone.now().date() - rental.end_date).days
+        late_fee = int(days * (Decimal(0.02) * rental.total_cost))
 
     context = {
-        'rental': rental
+        'rental': rental,
+        'late_fee': late_fee,
     }    
     return render(request, 'checkout_rental.html', context)
 

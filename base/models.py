@@ -41,13 +41,7 @@ class Rental(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
 
     def __str__(self):
-        return f"Rental {self.id}: {self.car} by {self.customer} ({self.get_status_display()})"
-
-    @property
-    def total_cost(self):
-        days = (self.end_date - self.start_date).days
-        total_price = self.car.price * days
-        return int(total_price)
+        return f'Rental {self.id}: {self.car} by {self.customer} ({self.get_status_display()})'
 
     @property
     def total_days(self):
@@ -57,9 +51,20 @@ class Rental(models.Model):
     @property
     def late_fee(self):
         fee = 0
-        if self.check_out_date:
-            if self.check_out_date > self.end_date:
-                days = (self.check_out_date - self.end_date).days
-                fee = days * (Decimal(0.02) * self.total_cost)
+        if not self.check_out_date: return fee
+
+        if self.check_out_date > self.end_date:
+            days = (self.check_out_date - self.end_date).days
+            fee = (float(0.02) * self.total_cost) * days
         return int(fee)
+
+    @property
+    def total_cost(self):
+        days = (self.end_date - self.start_date).days
+        total_price = (self.car.price * days)
+        return int(total_price)
+    
+    @property
+    def total_payment(self):
+        return self.total_cost + self.late_fee
     

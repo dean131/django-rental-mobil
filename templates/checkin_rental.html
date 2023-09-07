@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block contents %}
+    <div class="container-fluid d-flex justify-content-center">
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header text-center">
+                <h4 class="card-title">Checkin Rental</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <p><strong>Continue Checkin?</strong></p>
+                        </div>
+                        <div class="mb-3 d-flex justify-content-around">
+                            <a href="{% url 'rentals_page' %}" class="btn btn-light col-4">No</a>
+                            <button type="submit" class="btn btn-primary col-4">Yes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

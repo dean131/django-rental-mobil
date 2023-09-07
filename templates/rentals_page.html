@@ -2,68 +2,62 @@
 
 
 {% block contents %}
-
-<div class="container-fluid">
-    <div class="row">
-    
+ 
         {% include 'menu.html' %}
     
-        <!-- start table  -->
-        <div class="col-md shadow rounded-end p-2">
-            <div class="row mb-3">
-                <div class="col-10">
-                    <h2>Rental List</h2>
+        <div class="col-lg">
+            <div class="shadow rounded-end p-2">
+                <div class="row mb-3">
+                    <div class="col">
+                        <h2>Rental List</h2>
+                    </div>
+                    <div class="col d-flex justify-content-end">
+                        <a href="{% url 'add_rental' %}" class="btn btn-primary">Add Rental</a>
+                    </div>
                 </div>
-                <div class="col d-flex justify-content-around">
-                    <a href="{% url 'add_rental' %}" class="btn btn-primary">Add Rental</a>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Customer</th>
+                                <th scope="col">Car</th>
+                                <th scope="col">Start date</th>
+                                <th scope="col">End date</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Total Cost</th>
+                                <th scope="col" class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if rentals %}
+                            {% for rental in rentals %}
+                            <tr>
+                                <th scope="col">{{forloop.counter}}</th>
+                                <td>{{rental.customer}}</td>
+                                <td>{{rental.car}}</td>
+                                <td>{{rental.start_date}}</td>
+                                <td>{{rental.end_date}}</td>
+                                <td>{{rental.status}}</td>
+                                <td>Rp{{rental.total_cost}}</td>
+                                <td class="d-flex justify-content-around">
+                                    <a href="{% url 'checkin_rental' rental.id %}" class="btn btn-outline-success">Checkin</a>
+                                    <a href="{% url 'checkout_rental' rental.id %}" class="btn btn-outline-primary">Checkout</a>
+                                    <a href="{% url 'edit_rental' rental.id %}" class="btn btn-outline-warning">Edit</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="9" class="text-center">Data not found.</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th scope="col">No</th>
-                            <th scope="col">Customer</th>
-                            <th scope="col">Car</th>
-                            <th scope="col">Start date</th>
-                            <th scope="col">End date</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Total Cost</th>
-                            <th scope="col">Late Fee</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% if rentals %}
-                        {% for rental in rentals %}
-                        <tr>
-                            <th scope="col">{{forloop.counter}}</th>
-                            <td>{{rental.customer}}</td>
-                            <td>{{rental.car}}</td>
-                            <td>{{rental.start_date}}</td>
-                            <td>{{rental.end_date}}</td>
-                            <td>{{rental.status}}</td>
-                            <td>Rp{{rental.total_cost}}</td>
-                            <td>Rp{{rental.late_fee}}</td>
-                            <td class="d-flex justify-content-around">
-                                <a href="{% url 'checkout_rental' rental.id %}" class="btn btn-success">Checkout</a>
-                                <a href="{% url 'edit_rental' rental.id %}" class="btn btn-warning">Edit</a>
-                                <a href="{% url 'delete_rental' rental.id %}" class="btn btn-danger">Del</a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                        {% else %}
-                        <tr>
-                            <td colspan="9" class="text-center">Data not found.</td>
-                        </tr>
-                        {% endif %}
-                    </tbody>
-                </table>
             </div>
         </div>
-        <!-- end table  -->
-    </div>
-</div>
+
 {% endblock %}
 
 {% block scripts %}

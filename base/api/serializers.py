@@ -30,13 +30,15 @@ class RentalModelSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'customer', 
-            'car', 
-            'status', 
             'start_date', 
             'end_date', 
-            'total_cost', 
+            'check_out_date', 
             'total_days',
+            'status', 
+            'total_cost', 
             'late_fee',
+            'total_payment',
+            'car', 
         ]
 
 

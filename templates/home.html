@@ -3,48 +3,46 @@
 
 {% block contents %}
 
-<div class="container-fluid">
-    <div class="row">
-
         {% include 'menu.html' %}
-
-        <div class="col-lg shadow rounded-end p-2">
-            <div class="mb-3">
-                <h2>Dashboard</h2>
-            </div>
-            <div class="row text-center">
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Total Customers</h4>
-                        </div>
-                        <div class="card-body">
-                            <h1>{{total_customers}}</h1>
+        
+        <div class="col-lg">
+            <div class="shadow rounded-end p-2">
+                <div class="mb-3">
+                    <h2>Dashboard</h2>
+                </div>
+                <div class="row text-center">
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Total Customers</h4>
+                            </div>
+                            <div class="card-body">
+                                <h1>{{total_customers}}</h1>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Uncompleted Rentals</h4>
-                        </div>
-                        <div class="card-body">
-                            <h1>{{total_rentals}}</h1>
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Uncompleted Rentals</h4>
+                            </div>
+                            <div class="card-body">
+                                <h1>{{total_rentals}}</h1>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Available Cars</h4>
-                        </div>
-                        <div class="card-body">
-                            <h1>{{available_cars}}</h1>
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Available Cars</h4>
+                            </div>
+                            <div class="card-body">
+                                <h1>{{available_cars}}</h1>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+
 {% endblock %}

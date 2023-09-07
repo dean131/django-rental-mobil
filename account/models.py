@@ -70,9 +70,9 @@ class User(AbstractBaseUser):
 
 
 class OTPCode(models.Model):
-    code = models.IntegerField(null=True, blank=True)
-    expire = models.DateTimeField(null=True, blank=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    code = models.IntegerField()
+    expire = models.DateTimeField()
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         self.expire = timezone.now() + timedelta(minutes=5)

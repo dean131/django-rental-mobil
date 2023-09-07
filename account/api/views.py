@@ -1,7 +1,7 @@
 import random
+from django.utils import timezone
 
 from django.contrib.auth import login
-from django.utils import timezone
 from django.shortcuts import get_object_or_404
 
 from rest_framework import permissions
@@ -77,8 +77,7 @@ class RegisterAPIView(APIView):
         otp_code = random.randint(100000,999999)
         email = request.data.get('email')
         name = request.data.get('full_name')
-        if name:
-            name = name.split()[0]
+        if name: name = name.split()[0]
 
         try:
             user = User.objects.get(email=email, is_active=False)
@@ -92,7 +91,6 @@ class RegisterAPIView(APIView):
             EmailSender.otp_email(email=email, otp_code=otp_code, name=name)
             return CustomResponse.success(message=f'OTP code has been sent to {email}. Please check your email.')
         except:
-            print(f'request.data = {request.data}')
             serializer = RegistrationModelSerializer(data=request.data)
             if serializer.is_valid():
                 user = serializer.save()
@@ -154,7 +152,7 @@ class OTPConfirmAPIView(APIView):
             user = otp_obj.user 
             user.is_active = True
             user.save()
-            return CustomResponse.success(message='OTP code is still Valid')
+            return CustomResponse.success(message='OTP code is Valid')
             
         return CustomResponse.error(message='OTP Code has expired')
     

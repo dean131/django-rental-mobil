@@ -40,8 +40,7 @@ class CarModelViewSet(ModelViewSet):
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         fields = request.query_params.getlist('fields')
-        if fields:
-            fields = fields[0].split(',')
+        if fields: fields = fields[0].split(',')
 
         context = {
             'fields': fields,
@@ -56,8 +55,7 @@ class CarModelViewSet(ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         fields = request.query_params.getlist('fields')
-        if fields:
-            fields = fields[0].split(',')
+        if fields: fields = fields[0].split(',')
 
         context = {
             'fields': fields,
@@ -101,13 +99,11 @@ class RentalModelViewSet(ModelViewSet):
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         fields = request.query_params.getlist('fields')
-        if fields:
-            fields = fields[0].split(',')
-
+        if fields: fields = fields[0].split(',')
+            
         child_fields = request.query_params.getlist('child_fields')
-        if child_fields:
-            child_fields = child_fields[0].split(',')
-
+        if child_fields: child_fields = child_fields[0].split(',')
+            
         context = {
             'child_fields': child_fields,
             'fields': fields,
@@ -122,12 +118,10 @@ class RentalModelViewSet(ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         fields = request.query_params.getlist('fields')
-        if fields:
-            fields = fields[0].split(',')
+        if fields: fields = fields[0].split(',')
 
         child_fields = request.query_params.getlist('child_fields')
-        if child_fields:
-            child_fields = child_fields[0].split(',')
+        if child_fields: child_fields = child_fields[0].split(',')
             
         context = {
             'child_fields': child_fields,

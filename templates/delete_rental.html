@@ -7,13 +7,18 @@
         <div class="col-lg-4">
             <div class="card">
                 <div class="card-header text-center">
-                <h4 class="card-title">Edit Rental</h4>
+                <h4 class="card-title">Delete Rental</h4>
                 </div>
                 <div class="card-body">
                     <form method="post">
                         {% csrf_token %}
-                        {{form|crispy}}
-                        <input type="submit" class="btn btn-primary">
+                        <div class="mb-3">
+                            <p><strong>Continue delete?</strong></p>
+                        </div>
+                        <div class="mb-3 d-flex justify-content-around">
+                            <a href="{% url 'rentals_page' %}" class="btn btn-light col-4">No</a>
+                            <button type="submit" class="btn btn-danger col-4">Yes</button>
+                        </div>
                     </form>
                 </div>
             </div>

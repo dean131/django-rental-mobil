@@ -46,8 +46,9 @@
                             <td>Rp{{rental.total_cost}}</td>
                             <td>Rp{{rental.late_fee}}</td>
                             <td class="d-flex justify-content-around">
+                                <a href="{% url 'checkout_rental' rental.id %}" class="btn btn-success">Checkout</a>
                                 <a href="{% url 'edit_rental' rental.id %}" class="btn btn-warning">Edit</a>
-                                <a href="{% url 'checkout_rental' rental.id %}" class="btn btn-secondary">Check</a>
+                                <a href="{% url 'delete_rental' rental.id %}" class="btn btn-danger">Del</a>
                             </td>
                         </tr>
                         {% endfor %}

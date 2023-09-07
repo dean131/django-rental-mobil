@@ -59,7 +59,11 @@ def add_rental(request):
                 form.save()
                 return redirect('rentals_page')
         else:
-            messages.error(message='The car is currently being booked by another user.', extra_tags='danger')
+            messages.error(
+                request=request, 
+                message='The car is currently being booked by another user.', 
+                extra_tags='danger'
+            )
     
     context = {
         'form': form
@@ -82,6 +86,21 @@ def edit_rental(request, pk):
         'form': form
     }    
     return render(request, 'edit_rental.html', context)
+
+
+@login_required(login_url='login_page')
+def delete_rental(request, pk):
+    rental = Rental.objects.get(id=pk)
+
+    if request.method == 'POST':
+        rental.car.is_booked = False
+        rental.car.save()
+        rental.delete()
+        return redirect('rentals_page')
+    context ={
+        'rental': rental,
+    }
+    return render(request, 'delete_rental.html', context=context)
 
 
 @login_required(login_url='login_page')
